@@ -10,29 +10,39 @@
     "refine": "refine"
   },
   "dependencies": {
-    "@refinedev/cli": "^2.0.0",
+    "@ant-design/icons": "^5.0.1",
+    "@refinedev/antd": "5.3.6",
+    "@refinedev/cli": "2.1.2",
     "@refinedev/core": "^4.0.0",
-    "@refinedev/nextjs-router": "^5.0.0",
+    "@refinedev/graphql": "^5.0.0",
     "@refinedev/inferencer": "^3.0.0",
     "@refinedev/kbar": "^1.0.0",
+    "@refinedev/nextjs-router": "^5.0.0",
+    "antd": "^5.0.5",
+    "capitalize": "^2.0.4",
+    "connectkit": "^1.2.1",
+    "connectkit-next-siwe": "^0.1.0",
+    "ethers": "^5",
+    "graphql": "^15.5.3",
+    "graphql-request": "^4.3.0",
+    "i18next-browser-languagedetector": "^7.0.1",
+    "i18next-http-backend": "^2.2.0",
     "next": "^13.0.6",
+    "next-i18next": "^8.9.0",
     "nookies": "^2.5.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "@refinedev/graphql": "^5.0.0",
-    "graphql": "^15.5.3",
-    "graphql-request": "^4.3.0",
-    "@refinedev/antd": "^5.0.0",
-    "antd": "^5.0.5",
-    "@ant-design/icons": "^5.0.1",
-    "next-i18next": "^8.9.0"
+    "siwe": "^1.1.6",
+    "wagmi": "0.11.x"
   },
   "devDependencies": {
+    "@types/capitalize": "^2.0.0",
+    "@types/node": "^12.20.11",
+    "@types/pluralize": "^0.0.29",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-    "@types/node": "^12.20.11",
     "@typescript-eslint/parser": "5.48.0",
-    "typescript": "^4.7.4",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "typescript": "^4.7.4"
   }
 }

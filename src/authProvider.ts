@@ -1,84 +1,112 @@
-import { AuthBindings } from "@refinedev/core";
-import nookies from "nookies";
+import { AuthBindings, useGetIdentity } from "@refinedev/core"
+import {
+  connect,
+  disconnect,
+  fetchEnsAvatar,
+  fetchEnsName,
+  getAccount,
+} from "@wagmi/core"
+import { polygon } from "@wagmi/core/chains"
+import { InjectedConnector } from "@wagmi/core/connectors/injected"
+import { MetaMaskConnector } from "@wagmi/core/connectors/metaMask"
+import { SafeConnector } from "@wagmi/core/connectors/safe"
+import { publicProvider } from "@wagmi/core/providers/public"
+import { getDefaultClient } from "connectkit"
+import {
+  Address,
+  Connector,
+  configureChains,
+  createClient,
+  mainnet,
+} from "wagmi"
 
-const mockUsers = [
-  {
-    name: "John Doe",
-    email: "johndoe@mail.com",
-    roles: ["admin"],
-    avatar: "https://i.pravatar.cc/150?img=1",
-  },
-  {
-    name: "Jane Doe",
-    email: "janedoe@mail.com",
-    roles: ["editor"],
-    avatar: "https://i.pravatar.cc/150?img=1",
-  },
-];
+export { ConnectKitButton, ConnectKitProvider } from "connectkit"
+export { WagmiConfig } from "wagmi"
+
+export const chains = [polygon, mainnet]
+
+export const { provider } = configureChains(chains, [publicProvider()])
+
+export const wagmiClient = createClient(
+  getDefaultClient({
+    appName: "CAP",
+    alchemyId: process.env.NEXT_PUBLIC_ALCHEMY_ID!,
+    autoConnect: true,
+    chains,
+    provider,
+    connectors: [
+      new InjectedConnector({ chains }),
+      new MetaMaskConnector({ chains }),
+      new SafeConnector({ chains }),
+      // new WalletConnectConnector({
+      //   options: {
+      //     projectId: "",
+      //     metadata: {
+      //       name: "CAP",
+      //       description: "Climate Attestation Protocol",
+      //       url: "https://cap.climate",
+      //       icons: ["https://cap.climate/icon.png"],
+      //     },
+      //   },
+      // }),
+    ],
+  }),
+)
+
+export type LoginParams = Parameters<typeof connect>[0]
+
+export interface IIdentity {
+  id: Address
+  connector: Connector
+  name: string
+  avatar: string
+}
+
+export const useAuthIdentity = () => useGetIdentity<IIdentity>()
 
 export const authProvider: AuthBindings = {
-  login: async ({ email, username, password, remember }) => {
-    // Suppose we actually send a request to the back end here.
-    const user = mockUsers[0];
-
-    if (user) {
-      nookies.set(null, "auth", JSON.stringify(user), {
-        maxAge: 30 * 24 * 60 * 60,
-        path: "/",
-      });
-      return {
-        success: true,
-        redirectTo: "/",
-      };
-    }
-
-    return {
-      success: false,
-      error: {
-        name: "LoginError",
-        message: "Invalid username or password",
-      },
-    };
-  },
-  logout: async () => {
-    nookies.destroy(null, "auth");
+  login: async ({ chainId, connector }: LoginParams) => {
+    await connect({ chainId, connector })
     return {
       success: true,
-      redirectTo: "/login",
-    };
-  },
-  check: async (ctx: any) => {
-    const cookies = nookies.get(ctx);
-    if (cookies["auth"]) {
-      return {
-        authenticated: true,
-      };
+      redirectTo: "/dashboard",
     }
-
+  },
+  logout: async () => {
+    await disconnect()
     return {
-      authenticated: false,
-      logout: true,
-      redirectTo: "/login",
-    };
+      success: true,
+      redirectTo: "/",
+    }
+  },
+  check: async () => {
+    const { status } = getAccount()
+    const authenticated = status === "connected"
+    return { authenticated }
   },
   getPermissions: async () => {
-    const auth = nookies.get()["auth"];
-    if (auth) {
-      const parsedUser = JSON.parse(auth);
-      return parsedUser.roles;
-    }
-    return null;
+    return null
   },
   getIdentity: async () => {
-    const auth = nookies.get()["auth"];
-    if (auth) {
-      const parsedUser = JSON.parse(auth);
-      return parsedUser;
+    const { address, connector } = getAccount()
+    if (!address || !connector) {
+      return null
     }
-    return null;
+
+    const [name, avatar] = await Promise.all([
+      fetchEnsName({ address, chainId: 1 }),
+      fetchEnsAvatar({ address, chainId: 1 }),
+    ])
+    const identity: IIdentity = {
+      id: address,
+      connector: connector,
+      name: name ?? "",
+      avatar: avatar ?? "",
+    }
+    return identity
   },
-  onError: async (error) => {
-    console.error(error);
-    return { error };
+  onError: async error => {
+    console.error(error)
+    return { error }
   },
-};
+}

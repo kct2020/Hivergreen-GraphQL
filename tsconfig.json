@@ -15,6 +15,10 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
+      "@cap/sdk/*": ["../cap/sdk/*"],
+      "@cap/sdk": ["../cap/sdk"],
+      "@lib/*": ["src/lib/*"],
+      "@lib": ["src/lib"],
       "@components/*": ["src/components/*"],
       "@components": ["src/components"],
       "@contexts/*": ["src/contexts/*"],
@@ -23,8 +27,9 @@
       "@styles": ["src/styles"],
       "@public/*": ["public/*"],
       "@public": ["public"]
-    }
+    },
+    "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js"],
   "exclude": ["node_modules"]
 }
