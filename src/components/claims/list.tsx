@@ -3,7 +3,6 @@ import {
   DateField,
   EditButton,
   ShowButton,
-  TextField,
   getDefaultSortOrder,
   useTable,
 } from "@refinedev/antd"
@@ -15,6 +14,8 @@ import {
 } from "@refinedev/core"
 import { DatePicker, Space, Table } from "antd"
 
+import { claimFields } from "./index"
+
 interface FilterVariables {
   valid: [string, string]
   regenerators: string[]
@@ -24,6 +25,9 @@ export const ClaimList: React.FC<
   IResourceComponentsProps<GetListResponse<Claim>>
 > = () => {
   const { tableProps, sorters } = useTable<Claim, HttpError, FilterVariables>({
+    meta: {
+      fields: claimFields,
+    },
     pagination: {
       pageSize: 25,
     },

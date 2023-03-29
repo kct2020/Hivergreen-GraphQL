@@ -10,22 +10,20 @@ import { polygon } from "@wagmi/core/chains"
 import { InjectedConnector } from "@wagmi/core/connectors/injected"
 import { MetaMaskConnector } from "@wagmi/core/connectors/metaMask"
 import { SafeConnector } from "@wagmi/core/connectors/safe"
+import { alchemyProvider } from "@wagmi/core/providers/alchemy"
 import { publicProvider } from "@wagmi/core/providers/public"
 import { getDefaultClient } from "connectkit"
-import {
-  Address,
-  Connector,
-  configureChains,
-  createClient,
-  mainnet,
-} from "wagmi"
+import { Address, Connector, configureChains, createClient } from "wagmi"
 
 export { ConnectKitButton, ConnectKitProvider } from "connectkit"
 export { WagmiConfig } from "wagmi"
 
-export const chains = [polygon, mainnet]
+export const chains = [polygon]
 
-export const { provider } = configureChains(chains, [publicProvider()])
+export const { provider } = configureChains(chains, [
+  alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY! }),
+  publicProvider(),
+])
 
 export const wagmiClient = createClient(
   getDefaultClient({
@@ -43,7 +41,7 @@ export const wagmiClient = createClient(
       //     projectId: "",
       //     metadata: {
       //       name: "CAP",
-      //       description: "Climate Attestation Protocol",
+      //       description: "Climate Attestation Evaluator",
       //       url: "https://cap.climate",
       //       icons: ["https://cap.climate/icon.png"],
       //     },
@@ -93,16 +91,17 @@ export const authProvider: AuthBindings = {
       return null
     }
 
-    const [name, avatar] = await Promise.all([
-      fetchEnsName({ address, chainId: 1 }),
-      fetchEnsAvatar({ address, chainId: 1 }),
-    ])
+    // const [name, avatar] = await Promise.all([
+    //   fetchEnsName({ address, chainId: 1 }),
+    //   fetchEnsAvatar({ address, chainId: 1 }),
+    // ])
     const identity: IIdentity = {
       id: address,
       connector: connector,
-      name: name ?? "",
-      avatar: avatar ?? "",
+      name: "",
+      avatar: "",
     }
+
     return identity
   },
   onError: async error => {

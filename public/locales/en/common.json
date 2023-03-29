@@ -6,10 +6,10 @@
     "claim": "Claims"
   },
   "evaluator": {
-    "evaluator": "Accreditors"
+    "evaluator": "Evaluators"
   },
   "accreditation": {
-    "accreditation": "Evaluate"
+    "accreditation": "Accredit"
   },
   "credit": {
     "credit": "Credits"

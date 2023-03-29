@@ -24,11 +24,13 @@ import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar"
 import routerProvider, {
   UnsavedChangesNotifier,
 } from "@refinedev/nextjs-router"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ConfigProvider } from "antd"
 import { ConnectKitProvider } from "connectkit"
 import type { NextPage } from "next"
 import { appWithTranslation, useTranslation } from "next-i18next"
 import { AppProps } from "next/app"
+import { useState } from "react"
 import { WagmiConfig, authProvider, wagmiClient } from "src/authProvider"
 import { dataProvider } from "src/dataProvider"
 
@@ -68,97 +70,91 @@ const App: NextPageWithLayout<AppPropsWithLayout> = ({
     getLocale: () => "en",
   }
 
+  const [queryClient] = useState(() => new QueryClient())
+
   return (
     <>
       <ConfigProvider theme={theme}>
-        <WagmiConfig client={wagmiClient}>
-          <SIWEProvider>
-            <RefineKbarProvider>
-              <Refine
-                routerProvider={routerProvider}
-                dataProvider={gqlDataProvider}
-                notificationProvider={notificationProvider}
-                authProvider={authProvider}
-                i18nProvider={i18nProvider}
-                resources={[
-                  {
-                    name: "regenerator",
-                    list: "/regenerator",
-                    create: "/regenerator/create",
-                    edit: "/regenerator/edit/:id",
-                    show: "/regenerator/show/:id",
-                    meta: {
-                      icon: <CompassOutlined />,
-                    },
-                  },
-                  {
-                    name: "claim",
-                    list: "/claim",
-                    create: "/claim/create",
-                    show: "/claim/show/:id",
-                    meta: {
-                      icon: <PlusCircleOutlined />,
-                    },
-                  },
-                  {
-                    name: "evaluators",
-                    meta: {
-                      icon: <EyeOutlined />,
-                    },
-                  },
-                  {
-                    name: "protocol",
-                    list: "/protocol",
-                    create: "/protocol/create",
-                    edit: "/protocol/edit/:id",
-                    show: "/protocol/show/:id",
-                    meta: {
-                      parent: "evaluators",
-                      icon: <DeploymentUnitOutlined />,
-                    },
-                  },
-                  {
-                    name: "accreditation",
-                    list: "/accreditation",
-                    create: "/accreditation/create",
-                    show: "/accreditation/show/:id",
-                    edit: "/accreditation/edit/:id",
-                    meta: {
-                      parent: "evaluators",
-                      icon: <FileDoneOutlined />,
-                    },
-                  },
-                  {
-                    name: "credit",
-                    list: "/credit",
-                    show: "/credit/show/:id",
-                    create: "/credit/create",
-                    meta: {
-                      icon: <CheckCircleOutlined />,
-                    },
-                  },
-                  {
-                    name: "certificate",
-                    list: "/certificate",
-                    show: "/certificate/show/:id",
-                    create: "/certificate/create",
-                    meta: {
-                      icon: <SafetyCertificateOutlined />,
-                    },
-                  },
-                ]}
-                options={{
-                  syncWithLocation: true,
-                  warnWhenUnsavedChanges: true,
-                }}
-              >
-                <ConnectKitProvider>{renderComponent()}</ConnectKitProvider>
-                <RefineKbar />
-                <UnsavedChangesNotifier />
-              </Refine>
-            </RefineKbarProvider>
-          </SIWEProvider>
-        </WagmiConfig>
+        <QueryClientProvider client={queryClient}>
+          <WagmiConfig client={wagmiClient}>
+            <SIWEProvider>
+              <ConnectKitProvider mode="light">
+                <RefineKbarProvider>
+                  <Refine
+                    routerProvider={routerProvider}
+                    dataProvider={gqlDataProvider}
+                    notificationProvider={notificationProvider}
+                    authProvider={authProvider}
+                    i18nProvider={i18nProvider}
+                    resources={[
+                      {
+                        name: "regenerator",
+                        list: "/regenerator",
+                        create: "/regenerator?create=modal",
+                        edit: "/regenerator/:id/edit",
+                        show: "/regenerator/:id/show",
+                        meta: {
+                          icon: <CompassOutlined />,
+                        },
+                      },
+                      {
+                        name: "claim",
+                        list: "/claim",
+                        create: "/claim?create=modal",
+                        show: "/claim/:id/show",
+                        meta: {
+                          icon: <PlusCircleOutlined />,
+                        },
+                      },
+                      {
+                        name: "evaluator",
+                        list: "/evaluator",
+                        create: "/evaluator?create=modal",
+                        edit: "/evaluator/:id/edit",
+                        show: "/evaluator/:id/show",
+                        meta: {
+                          icon: <DeploymentUnitOutlined />,
+                        },
+                      },
+                      // {
+                      //   name: "accreditation",
+                      //   list: "/accreditation",
+                      //   create: "/accreditation/create",
+                      //   show: "/accreditation/show/:id",
+                      //   edit: "/accreditation/edit/:id",
+                      //   meta: {
+                      //     parent: "evaluators",
+                      //     icon: <FileDoneOutlined />,
+                      //   },
+                      // },
+                      {
+                        name: "credit",
+                        list: "/credit",
+                        show: "/credit/show/:id",
+                        meta: {
+                          icon: <CheckCircleOutlined />,
+                        },
+                      },
+                      {
+                        name: "certificate",
+                        list: "/certificate",
+                        show: "/certificate/show/:id",
+                        meta: {
+                          icon: <SafetyCertificateOutlined />,
+                        },
+                      },
+                    ]}
+                    options={{ syncWithLocation: true }}
+                  >
+                    {renderComponent()}
+                    <RefineKbar />
+                    <UnsavedChangesNotifier />
+                  </Refine>
+                </RefineKbarProvider>
+              </ConnectKitProvider>
+            </SIWEProvider>
+          </WagmiConfig>
+        </QueryClientProvider>
       </ConfigProvider>
     </>
   )

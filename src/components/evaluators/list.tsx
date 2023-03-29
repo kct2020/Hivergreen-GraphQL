@@ -1,4 +1,4 @@
-import type { Regenerator } from "@cap/sdk/graph"
+import type { Evaluator } from "@cap/sdk/graph"
 import {
   DateField,
   EditButton,
@@ -13,14 +13,14 @@ import {
 } from "@refinedev/core"
 import { Space, Table } from "antd"
 
-import { regeneratorFields } from "./index"
+import { evaluatorFields } from "./index"
 
-export const RegeneratorList: React.FC<
+export const EvaluatorList: React.FC<
   IResourceComponentsProps<GetListResponse<{}>>
 > = () => {
-  const { tableProps, sorters } = useTable<Regenerator, HttpError>({
+  const { tableProps, sorters } = useTable<Evaluator, HttpError>({
     meta: {
-      fields: regeneratorFields,
+      fields: evaluatorFields,
     },
     pagination: {
       pageSize: 25,
@@ -40,7 +40,7 @@ export const RegeneratorList: React.FC<
         render={value => <DateField format="LLL" value={value} />}
         defaultSortOrder={getDefaultSortOrder("createdAt", sorters)}
       />
-      <Table.Column<Regenerator>
+      <Table.Column<Evaluator>
         title="Actions"
         dataIndex="actions"
         render={(_, record) => (
