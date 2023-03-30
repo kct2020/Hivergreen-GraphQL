@@ -28,28 +28,26 @@ export const RefineApp: React.FC<React.PropsWithChildren> = ({ children }) => {
   const authProvider = useMemo(() => makeAuthProvider(siwe), [siwe])
 
   return (
-    <Suspense>
-      <RefineKbarProvider>
-        <Refine
-          routerProvider={routerProvider}
-          dataProvider={dataProvider}
-          notificationProvider={notificationProvider}
-          authProvider={authProvider}
-          i18nProvider={i18nProvider}
-          resources={resources}
-          options={{
-            syncWithLocation: true,
-            mutationMode: "pessimistic",
-            warnWhenUnsavedChanges: true,
-            reactQuery: { clientConfig: queryClient },
-          }}
-        >
-          {children}
-          <RefineKbar />
-          <UnsavedChangesNotifier />
-        </Refine>
-      </RefineKbarProvider>
-    </Suspense>
+    <RefineKbarProvider>
+      <Refine
+        routerProvider={routerProvider}
+        dataProvider={dataProvider}
+        notificationProvider={notificationProvider}
+        authProvider={authProvider}
+        i18nProvider={i18nProvider}
+        resources={resources}
+        options={{
+          syncWithLocation: true,
+          mutationMode: "pessimistic",
+          warnWhenUnsavedChanges: true,
+          reactQuery: { clientConfig: queryClient },
+        }}
+      >
+        {children}
+        <RefineKbar />
+        <UnsavedChangesNotifier />
+      </Refine>
+    </RefineKbarProvider>
   )
 }
 

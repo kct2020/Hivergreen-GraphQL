@@ -15,6 +15,7 @@ import { AppProps } from "next/app"
 import dynamic from "next/dynamic"
 import Router from "next/router"
 import NProgress from "nprogress"
+import { Suspense } from "react"
 
 const Web3App = dynamic(() => import("@contexts/web3"), { ssr: false })
 const RefineApp = dynamic(() => import("@contexts/refine"), { ssr: false })
@@ -41,13 +42,13 @@ const App: RefinePage<AppPropsWithLayout> = ({ Component, pageProps }) => {
       )
 
   return (
-    <>
-      <ConfigProvider theme={theme}>
+    <ConfigProvider theme={theme}>
+      <Suspense>
         <Web3App>
           <RefineApp>{render()}</RefineApp>
         </Web3App>
-      </ConfigProvider>
-    </>
+      </Suspense>
+    </ConfigProvider>
   )
 }
 
