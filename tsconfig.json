@@ -15,8 +15,8 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@cap/sdk/*": ["../cap/sdk/*"],
-      "@cap/sdk": ["../cap/sdk"],
+      "@cap/sdk/*": ["src/cap/*"],
+      "@cap/sdk": ["src/cap"],
       "@lib/*": ["src/lib/*"],
       "@lib": ["src/lib"],
       "@components/*": ["src/components/*"],

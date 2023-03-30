@@ -1,7 +1,7 @@
 import "@refinedev/antd/dist/reset.css"
 import "@lib/i18n"
 import "nprogress/nprogress.css"
-import "src/global.css"
+import "@styles/global.css"
 
 import { Layout } from "@components/layout"
 import { Header } from "@components/layout/header"
