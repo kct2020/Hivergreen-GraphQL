@@ -24,7 +24,13 @@ export const Layout: React.FC<RefineLayoutLayoutProps> = ({
       <AntdLayout>
         <HeaderToRender />
         <AntdLayout.Content>
-          <div style={{ minHeight: 360, padding: isSmall ? 24 : 12 }}>
+          <div
+            style={{
+              height: "100%",
+              minHeight: 360,
+              padding: isSmall ? 24 : 12,
+            }}
+          >
             {children}
           </div>
           {OffLayoutArea && <OffLayoutArea />}

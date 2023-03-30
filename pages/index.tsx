@@ -1,5 +1,5 @@
-import type { NextPage } from "next"
+import { RefinePage } from "./_app"
 
-const IndexPage: NextPage = () => null
+const IndexPage: RefinePage = () => null
 
 export default IndexPage
