@@ -962,6 +962,11 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
+"@graphql-typed-document-node/core@^3.1.1":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
+  integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
+
 "@ipld/car@^3.0.1", "@ipld/car@^3.1.4", "@ipld/car@^3.2.3":
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/@ipld/car/-/car-3.2.4.tgz#115951ba2255ec51d865773a074e422c169fb01c"
@@ -1563,15 +1568,15 @@
     tslib "^2.3.1"
     warn-once "^0.1.0"
 
-"@refinedev/graphql@^5.0.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@refinedev/graphql/-/graphql-5.1.0.tgz#45ebbde4b4b2769b3d5259d57074f65dcaa0f226"
-  integrity sha512-ETT7EAcQqI/aBzFAW97fQhYm/VwE9tlbxTCooY8wEz9njYME64PQbPxksGzBH9jLdfGLhXnSI9RKmmaJv9/Emg==
+"@refinedev/graphql@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@refinedev/graphql/-/graphql-6.0.1.tgz#ae581605aafd6415bfb31e2f1da96e917093f142"
+  integrity sha512-v0xaQWTZsHA2KKiM6lhJCQ7lchNE5pIk8pc+9UJBT65xCb8K4uwGgTZMjDxtQAr3aiFm2xIIBiSG1GiiZaSTmQ==
   dependencies:
     camelcase "^6.2.0"
     gql-query-builder "^3.5.5"
     graphql "^15.6.1"
-    graphql-request "^4.3.0"
+    graphql-request "^5.2.0"
     graphql-ws "^5.9.1"
     pluralize "^8.0.0"
 
@@ -5165,6 +5170,16 @@ graphql-request@^4.3.0:
   resolved "https://registry.yarnpkg.com/graphql-request/-/graphql-request-4.3.0.tgz#b934e08fcae764aa2cdc697d3c821f046cb5dbf2"
   integrity sha512-2v6hQViJvSsifK606AliqiNiijb1uwWp6Re7o0RTyH+uRTv/u7Uqm2g4Fjq/LgZIzARB38RZEvVBFOQOVdlBow==
   dependencies:
+    cross-fetch "^3.1.5"
+    extract-files "^9.0.0"
+    form-data "^3.0.0"
+
+graphql-request@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/graphql-request/-/graphql-request-5.2.0.tgz#a05fb54a517d91bb2d7aefa17ade4523dc5ebdca"
+  integrity sha512-pLhKIvnMyBERL0dtFI3medKqWOz/RhHdcgbZ+hMMIb32mEPa5MJSzS4AuXxfI4sRAu6JVVk5tvXuGfCWl9JYWQ==
+  dependencies:
+    "@graphql-typed-document-node/core" "^3.1.1"
     cross-fetch "^3.1.5"
     extract-files "^9.0.0"
     form-data "^3.0.0"

@@ -10,7 +10,7 @@ import routerProvider, {
 } from "@refinedev/nextjs-router"
 import { useSIWE } from "connectkit"
 import { useTranslation } from "next-i18next"
-import React, { useMemo } from "react"
+import React, { Suspense, useMemo } from "react"
 import { makeAuthProvider } from "src/authProvider"
 import { dataProvider } from "src/dataProvider"
 
@@ -28,26 +28,28 @@ export const RefineApp: React.FC<React.PropsWithChildren> = ({ children }) => {
   const authProvider = useMemo(() => makeAuthProvider(siwe), [siwe])
 
   return (
-    <RefineKbarProvider>
-      <Refine
-        routerProvider={routerProvider}
-        dataProvider={dataProvider}
-        notificationProvider={notificationProvider}
-        authProvider={authProvider}
-        i18nProvider={i18nProvider}
-        resources={resources}
-        options={{
-          syncWithLocation: true,
-          mutationMode: "pessimistic",
-          warnWhenUnsavedChanges: true,
-          reactQuery: { clientConfig: queryClient },
-        }}
-      >
-        {children}
-        <RefineKbar />
-        <UnsavedChangesNotifier />
-      </Refine>
-    </RefineKbarProvider>
+    <Suspense>
+      <RefineKbarProvider>
+        <Refine
+          routerProvider={routerProvider}
+          dataProvider={dataProvider}
+          notificationProvider={notificationProvider}
+          authProvider={authProvider}
+          i18nProvider={i18nProvider}
+          resources={resources}
+          options={{
+            syncWithLocation: true,
+            mutationMode: "pessimistic",
+            warnWhenUnsavedChanges: true,
+            reactQuery: { clientConfig: queryClient },
+          }}
+        >
+          {children}
+          <RefineKbar />
+          <UnsavedChangesNotifier />
+        </Refine>
+      </RefineKbarProvider>
+    </Suspense>
   )
 }
 
