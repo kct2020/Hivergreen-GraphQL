@@ -41,7 +41,7 @@ export const MethodologyList: React.FC<
         dataIndex="updatedAt"
         title="Updated At"
         render={value => (
-          <DateField format="LL" value={dayjs(parseInt(value))} />
+          <DateField format="LLL" value={dayjs(parseInt(value))} />
         )}
       />
       <Table.Column<Methodology> dataIndex={["owner", "id"]} title="Owner" />

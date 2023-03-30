@@ -41,7 +41,7 @@ export const RegeneratorList: React.FC<
         dataIndex="updatedAt"
         title="Updated At"
         render={value => (
-          <DateField format="LL" value={dayjs(parseInt(value))} />
+          <DateField format="LLL" value={dayjs(parseInt(value))} />
         )}
       />
       <Table.Column<Regenerator> dataIndex={["owner", "id"]} title="Owner" />
