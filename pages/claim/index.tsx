@@ -4,6 +4,7 @@ import { InboxOutlined, PlusCircleOutlined } from "@ant-design/icons"
 import type { Claim, Regenerator } from "@cap/sdk/graph"
 import { ClaimList } from "@components/claims/list"
 import { queryClient } from "@contexts/web3"
+import { getServerSideProps, i18NProps } from "@lib/i18nSSR"
 import { useModalForm, useSelect, useTable } from "@refinedev/antd"
 import { List } from "@refinedev/antd"
 import { HttpError } from "@refinedev/core"
@@ -15,9 +16,9 @@ import type { RefinePage } from "pages/_app"
 import React from "react"
 import { claim } from "src/mutations/attestations"
 
-export { getServerSideProps } from "@lib/i18nSSR"
+export { getServerSideProps }
 
-const ClaimIndexPage: RefinePage = () => {
+const ClaimIndexPage: RefinePage<i18NProps> = () => {
   const router = useRouter()
 
   const { modalProps, formProps, show, close } = useModalForm<Claim>({

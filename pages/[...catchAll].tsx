@@ -2,15 +2,13 @@ import { getServerSideProps as getTranslationProps } from "@lib/i18nSSR"
 import { getSession } from "@lib/siwe"
 import { ErrorComponent } from "@refinedev/antd"
 import { GetServerSideProps } from "next"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 import { makeAuthProvider } from "src/authProvider"
 
-export default function CatchAll() {
-  return <ErrorComponent />
-}
+export default ErrorComponent
 
 export const getServerSideProps: GetServerSideProps<{}> = async context => {
   const session = await getSession(context.req, context.res)
+
   const { authenticated, redirectTo } = await makeAuthProvider({
     isLoading: false,
     isSignedIn: Boolean(session.address),

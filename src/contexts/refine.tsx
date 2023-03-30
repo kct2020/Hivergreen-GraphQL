@@ -10,7 +10,7 @@ import routerProvider, {
 } from "@refinedev/nextjs-router"
 import { useSIWE } from "connectkit"
 import { useTranslation } from "next-i18next"
-import React, { Suspense, useMemo } from "react"
+import React, { useMemo } from "react"
 import { makeAuthProvider } from "src/authProvider"
 import { dataProvider } from "src/dataProvider"
 

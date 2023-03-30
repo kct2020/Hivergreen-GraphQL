@@ -3,10 +3,6 @@ import "@lib/i18n"
 import "nprogress/nprogress.css"
 import "@styles/global.css"
 
-import { Layout } from "@components/layout"
-import { Header } from "@components/layout/header"
-import { Sider } from "@components/layout/sider"
-import { Title } from "@components/layout/title"
 import { theme } from "@lib/theme"
 import { ConfigProvider } from "antd"
 import type { NextPage } from "next"
@@ -16,14 +12,13 @@ import dynamic from "next/dynamic"
 import Router from "next/router"
 import NProgress from "nprogress"
 import { Suspense } from "react"
+import { Layout } from "src/layout"
+import { Header } from "src/layout/header"
+import { Sider } from "src/layout/sider"
+import { Title } from "src/layout/title"
 
 const Web3App = dynamic(() => import("@contexts/web3"), { ssr: false })
 const RefineApp = dynamic(() => import("@contexts/refine"), { ssr: false })
-
-Router.events.on("routeChangeStart", () => NProgress.start())
-Router.events.on("routeChangeComplete", () => NProgress.done())
-Router.events.on("routeChangeError", () => NProgress.done())
-
 export type RefinePage<P = {}, IP = P> = NextPage<P, IP> & {
   noLayout?: boolean
 }
@@ -43,13 +38,17 @@ const App: RefinePage<AppPropsWithLayout> = ({ Component, pageProps }) => {
 
   return (
     <ConfigProvider theme={theme}>
-      <Suspense>
-        <Web3App>
+      <Web3App>
+        <Suspense>
           <RefineApp>{render()}</RefineApp>
-        </Web3App>
-      </Suspense>
+        </Suspense>
+      </Web3App>
     </ConfigProvider>
   )
 }
+
+Router.events.on("routeChangeStart", () => NProgress.start())
+Router.events.on("routeChangeComplete", () => NProgress.done())
+Router.events.on("routeChangeError", () => NProgress.done())
 
 export default appWithTranslation(App)
