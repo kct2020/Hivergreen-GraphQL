@@ -1,5 +1,7 @@
 import "@refinedev/antd/dist/reset.css"
 import "@lib/i18n"
+import "nprogress/nprogress.css"
+import "src/global.css"
 
 import { Layout } from "@components/layout"
 import { Header } from "@components/layout/header"
@@ -11,9 +13,15 @@ import type { NextPage } from "next"
 import { appWithTranslation } from "next-i18next"
 import { AppProps } from "next/app"
 import dynamic from "next/dynamic"
+import Router from "next/router"
+import NProgress from "nprogress"
 
 const Web3App = dynamic(() => import("@contexts/web3"), { ssr: false })
 const RefineApp = dynamic(() => import("@contexts/refine"), { ssr: false })
+
+Router.events.on("routeChangeStart", () => NProgress.start())
+Router.events.on("routeChangeComplete", () => NProgress.done())
+Router.events.on("routeChangeError", () => NProgress.done())
 
 export type RefinePage<P = {}, IP = P> = NextPage<P, IP> & {
   noLayout?: boolean
@@ -33,11 +41,13 @@ const App: RefinePage<AppPropsWithLayout> = ({ Component, pageProps }) => {
       )
 
   return (
-    <ConfigProvider theme={theme}>
-      <Web3App>
-        <RefineApp>{render()}</RefineApp>
-      </Web3App>
-    </ConfigProvider>
+    <>
+      <ConfigProvider theme={theme}>
+        <Web3App>
+          <RefineApp>{render()}</RefineApp>
+        </Web3App>
+      </ConfigProvider>
+    </>
   )
 }
 

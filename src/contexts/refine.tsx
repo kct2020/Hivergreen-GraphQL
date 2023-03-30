@@ -39,6 +39,7 @@ export const RefineApp: React.FC<React.PropsWithChildren> = ({ children }) => {
         options={{
           syncWithLocation: true,
           mutationMode: "pessimistic",
+          warnWhenUnsavedChanges: true,
           reactQuery: { clientConfig: queryClient },
         }}
       >
