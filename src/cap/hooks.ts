@@ -2633,10 +2633,7 @@ export function usePrepareAclAuthoritySetPublicCapability(
     abi: aclAuthorityABI,
     functionName: "setPublicCapability",
     ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof aclAuthorityABI,
-    "setPublicCapability"
-  >)
+  } as UsePrepareContractWriteConfig<typeof aclAuthorityABI, "setPublicCapability">)
 }
 
 /**
@@ -2652,10 +2649,7 @@ export function usePrepareAclAuthoritySetRoleCapability(
     abi: aclAuthorityABI,
     functionName: "setRoleCapability",
     ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof aclAuthorityABI,
-    "setRoleCapability"
-  >)
+  } as UsePrepareContractWriteConfig<typeof aclAuthorityABI, "setRoleCapability">)
 }
 
 /**
@@ -2671,10 +2665,7 @@ export function usePrepareAclAuthoritySetTargetAuthority(
     abi: aclAuthorityABI,
     functionName: "setTargetAuthority",
     ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof aclAuthorityABI,
-    "setTargetAuthority"
-  >)
+  } as UsePrepareContractWriteConfig<typeof aclAuthorityABI, "setTargetAuthority">)
 }
 
 /**
@@ -2706,10 +2697,7 @@ export function usePrepareAclAuthorityTransferOwnership(
     abi: aclAuthorityABI,
     functionName: "transferOwnership",
     ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof aclAuthorityABI,
-    "transferOwnership"
-  >)
+  } as UsePrepareContractWriteConfig<typeof aclAuthorityABI, "transferOwnership">)
 }
 
 /**
@@ -3125,10 +3113,7 @@ export function usePrepareMethodologiesSafeTransferFrom(
     address: methodologiesAddress[chainId as keyof typeof methodologiesAddress],
     functionName: "safeTransferFrom",
     ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof methodologiesABI,
-    "safeTransferFrom"
-  >)
+  } as UsePrepareContractWriteConfig<typeof methodologiesABI, "safeTransferFrom">)
 }
 
 /**
@@ -3150,10 +3135,7 @@ export function usePrepareMethodologiesSetApprovalForAll(
     address: methodologiesAddress[chainId as keyof typeof methodologiesAddress],
     functionName: "setApprovalForAll",
     ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof methodologiesABI,
-    "setApprovalForAll"
-  >)
+  } as UsePrepareContractWriteConfig<typeof methodologiesABI, "setApprovalForAll">)
 }
 
 /**
@@ -3556,10 +3538,7 @@ export function usePrepareRegeneratorsSafeTransferFrom(
     address: regeneratorsAddress[chainId as keyof typeof regeneratorsAddress],
     functionName: "safeTransferFrom",
     ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof regeneratorsABI,
-    "safeTransferFrom"
-  >)
+  } as UsePrepareContractWriteConfig<typeof regeneratorsABI, "safeTransferFrom">)
 }
 
 /**
@@ -3581,10 +3560,7 @@ export function usePrepareRegeneratorsSetApprovalForAll(
     address: regeneratorsAddress[chainId as keyof typeof regeneratorsAddress],
     functionName: "setApprovalForAll",
     ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof regeneratorsABI,
-    "setApprovalForAll"
-  >)
+  } as UsePrepareContractWriteConfig<typeof regeneratorsABI, "setApprovalForAll">)
 }
 
 /**
@@ -4606,10 +4582,7 @@ export function usePrepareCapRevokeAccreditationWithSignature(
     address: capAddress[chainId as keyof typeof capAddress],
     functionName: "revokeAccreditationWithSignature",
     ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof capABI,
-    "revokeAccreditationWithSignature"
-  >)
+  } as UsePrepareContractWriteConfig<typeof capABI, "revokeAccreditationWithSignature">)
 }
 
 /**
@@ -4807,10 +4780,7 @@ export function usePrepareCapSetPropertiesWithSignature(
     address: capAddress[chainId as keyof typeof capAddress],
     functionName: "setPropertiesWithSignature",
     ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof capABI,
-    "setPropertiesWithSignature"
-  >)
+  } as UsePrepareContractWriteConfig<typeof capABI, "setPropertiesWithSignature">)
 }
 
 /**
@@ -4942,10 +4912,7 @@ export function usePrepareCapInvalidateUnorderedNonces(
     address: capAddress[chainId as keyof typeof capAddress],
     functionName: "invalidateUnorderedNonces",
     ...config,
-  } as UsePrepareContractWriteConfig<
-    typeof capABI,
-    "invalidateUnorderedNonces"
-  >)
+  } as UsePrepareContractWriteConfig<typeof capABI, "invalidateUnorderedNonces">)
 }
 
 /**

@@ -2,8 +2,8 @@ import type { Regenerator } from "@cap/sdk/graph"
 import {
   DateField,
   EditButton,
-  ShowButton,
   getDefaultSortOrder,
+  ShowButton,
   useTable,
 } from "@refinedev/antd"
 import {
@@ -36,27 +36,27 @@ export const RegeneratorList: React.FC<
   return (
     <Table {...tableProps} rowKey="id">
       <Table.Column<Regenerator>
-        sorter
-        defaultSortOrder={getDefaultSortOrder("updatedAt", sorters)}
         dataIndex="updatedAt"
-        title="Updated At"
+        defaultSortOrder={getDefaultSortOrder("updatedAt", sorters)}
         render={value => (
           <DateField format="LLL" value={dayjs(parseInt(value))} />
         )}
+        sorter
+        title="Updated At"
       />
       <Table.Column<Regenerator> dataIndex={["owner", "id"]} title="Owner" />
       <Table.Column<Regenerator> dataIndex="id" title="ID" />
       <Table.Column<Regenerator>
-        title="Actions"
         dataIndex="actions"
         render={(_, record) => (
           <Space>
-            <ShowButton size="small" recordItemId={record.id}>
+            <ShowButton recordItemId={record.id} size="small">
               View
             </ShowButton>
-            <EditButton size="small" recordItemId={record.id} />
+            <EditButton recordItemId={record.id} size="small" />
           </Space>
         )}
+        title="Actions"
       />
     </Table>
   )
