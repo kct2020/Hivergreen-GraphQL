@@ -5,8 +5,8 @@
   "claim": {
     "claim": "Claims"
   },
-  "evaluator": {
-    "evaluator": "Evaluators"
+  "methodologies": {
+    "methodologies": "Methodologies"
   },
   "accreditation": {
     "accreditation": "Accredit"

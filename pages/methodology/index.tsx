@@ -1,46 +1,46 @@
+"use client"
+
 import { DeploymentUnitOutlined, InboxOutlined } from "@ant-design/icons"
-import type { Evaluator } from "@cap/sdk/graph"
-import { EvaluatorList, evaluatorFields } from "@components/evaluators"
+import type { Methodology } from "@cap/sdk/graph"
+import { MethodologyList } from "@components/methodologies/list"
+import { queryClient } from "@contexts/web3"
 import { useModalForm } from "@refinedev/antd"
 import { List } from "@refinedev/antd"
 import { Form, Input, Upload } from "antd"
 import { Modal } from "antd"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
-import React, { useEffect } from "react"
-import { useAuthIdentity } from "src/authProvider"
+import React from "react"
+import { mintMethodology } from "src/mutations/group"
 
-const EvaluatorIndexPage: NextPage = () => {
+const MethodologyIndexPage: NextPage = () => {
   const router = useRouter()
 
-  const { modalProps, form, formProps, show, close } = useModalForm<Evaluator>({
+  const { modalProps, formProps, show, close } = useModalForm<Methodology>({
     action: "create",
     defaultVisible: Boolean(router.query.create),
-    mutationMode: "undoable",
     submitOnEnter: true,
-    meta: {
-      fields: evaluatorFields,
+    meta: { action: mintMethodology },
+    onMutationSuccess() {
+      queryClient.invalidateQueries({
+        exact: true,
+        queryKey: ["default", "methodologies"],
+      })
     },
   })
-
-  const { data: identity } = useAuthIdentity()
-
-  useEffect(() => {
-    form.setFieldValue("owner", identity?.id)
-  }, [identity?.id])
 
   return (
     <>
       <List
         createButtonProps={{ onClick: show, icon: <DeploymentUnitOutlined /> }}
       >
-        <EvaluatorList />
+        <MethodologyList />
       </List>
       <Modal
         {...modalProps}
-        onOk={close}
         onCancel={close}
         style={{ maxWidth: 600 }}
+        destroyOnClose
       >
         <Form {...formProps} layout="vertical" requiredMark="optional">
           <Form.Item name="name" label="Name" rules={[{ required: true }]}>
@@ -51,15 +51,17 @@ const EvaluatorIndexPage: NextPage = () => {
             label="Description"
             rules={[{ required: true }]}
           >
-            <Input.TextArea autoSize={{ minRows: 3 }} />
+            <Input.TextArea autoSize={{ minRows: 3, maxRows: 12 }} />
           </Form.Item>
           <Form.Item
-            name="uri"
+            name="fileList"
             label="Documentation"
             rules={[{ required: true }]}
             valuePropName="fileList"
             getValueFromEvent={event =>
-              Array.isArray(event) ? event : event.fileList
+              event.fileList.map(
+                (f: { originFileObj: File }) => f.originFileObj,
+              )
             }
           >
             <Upload.Dragger listType="picture" multiple>
@@ -80,4 +82,4 @@ const EvaluatorIndexPage: NextPage = () => {
   )
 }
 
-export default EvaluatorIndexPage
+export default MethodologyIndexPage

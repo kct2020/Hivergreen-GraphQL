@@ -1,4 +1,4 @@
-import type { Regenerator } from "@cap/sdk/graph"
+import type { Methodology } from "@cap/sdk/graph"
 import {
   DateField,
   EditButton,
@@ -14,11 +14,11 @@ import {
 import { Space, Table } from "antd"
 import dayjs from "dayjs"
 
-export const RegeneratorList: React.FC<
+export const MethodologyList: React.FC<
   IResourceComponentsProps<GetListResponse<{}>>
 > = () => {
-  const { tableProps, sorters } = useTable<Regenerator, HttpError>({
-    resource: "regenerator",
+  const { tableProps, sorters } = useTable<Methodology, HttpError>({
+    resource: "methodology",
     meta: {
       fields: ["id", "uri", "updatedAt", { owner: ["id"] }],
     },
@@ -35,7 +35,7 @@ export const RegeneratorList: React.FC<
 
   return (
     <Table {...tableProps} rowKey="id">
-      <Table.Column<Regenerator>
+      <Table.Column<Methodology>
         sorter
         defaultSortOrder={getDefaultSortOrder("updatedAt", sorters)}
         dataIndex="updatedAt"
@@ -44,17 +44,25 @@ export const RegeneratorList: React.FC<
           <DateField format="LL" value={dayjs(parseInt(value))} />
         )}
       />
-      <Table.Column<Regenerator> dataIndex={["owner", "id"]} title="Owner" />
-      <Table.Column<Regenerator> dataIndex="id" title="ID" />
-      <Table.Column<Regenerator>
+      <Table.Column<Methodology> dataIndex={["owner", "id"]} title="Owner" />
+      <Table.Column<Methodology> dataIndex="id" title="ID" />
+      <Table.Column<Methodology>
         title="Actions"
         dataIndex="actions"
         render={(_, record) => (
           <Space>
-            <ShowButton size="small" recordItemId={record.id}>
+            <ShowButton
+              recordItemId={record.id}
+              resource="methodology"
+              size="small"
+            >
               View
             </ShowButton>
-            <EditButton size="small" recordItemId={record.id} />
+            <EditButton
+              recordItemId={record.id}
+              resource="methodology"
+              size="small"
+            />
           </Space>
         )}
       />

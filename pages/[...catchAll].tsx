@@ -1,36 +1,33 @@
+import { getServerSideProps as getTranslationProps } from "@lib/i18nSSR"
+import { getSession } from "@lib/siwe"
 import { ErrorComponent } from "@refinedev/antd"
 import { GetServerSideProps } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
-import { authProvider } from "src/authProvider"
+import { makeAuthProvider } from "src/authProvider"
 
 export default function CatchAll() {
   return <ErrorComponent />
 }
 
 export const getServerSideProps: GetServerSideProps<{}> = async context => {
-  const { authenticated, redirectTo } = await authProvider.check(context)
+  const session = await getSession(context.req, context.res)
+  const { authenticated, redirectTo } = await makeAuthProvider({
+    isLoading: false,
+    isSignedIn: Boolean(session.address),
+    data: session,
+  }).check()
 
-  const translateProps = await serverSideTranslations(context.locale ?? "en", [
-    "common",
-  ])
+  const props = await getTranslationProps(context)
 
   if (!authenticated && redirectTo) {
-    return {
-      props: {
-        ...translateProps,
-      },
-      redirect: {
-        destination: `${redirectTo}?to=${encodeURIComponent(
-          context.req.url || "/",
-        )}`,
-        permanent: false,
-      },
+    const redirectBackTo = encodeURIComponent(context.req.url || "/")
+    const redirect = {
+      destination: `${redirectTo}?to=${redirectBackTo}`,
+      permanent: false,
     }
+
+    return { ...props, redirect }
   }
 
-  return {
-    props: {
-      ...translateProps,
-    },
-  }
+  return props
 }

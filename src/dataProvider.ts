@@ -1,7 +1,4 @@
-import * as actions from "@cap/sdk/actions"
-import * as ipfs from "@lib/ipfs"
 import {
-  BaseRecord,
   CrudFilters,
   CrudSorting,
   DataProvider,
@@ -10,15 +7,20 @@ import {
 import { fetchSigner } from "@wagmi/core"
 import camelCase from "camelcase"
 import capitalize from "capitalize"
-import { BigNumber, constants } from "ethers"
 import * as gql from "gql-query-builder"
 import { GraphQLClient } from "graphql-request"
+import size from "lodash/size"
 import pluralize from "pluralize"
-import { Address } from "wagmi"
 
-const { AddressZero } = constants
+export const API_URL = process.env.NEXT_PUBLIC_SUBGRAPH_URL
+if (!API_URL) {
+  throw new Error("NEXT_PUBLIC_SUBGRAPH_URL is not defined")
+}
 
-export const entityName = (resource: string) => capitalize(camelCase(resource))
+export const gqlClient = new GraphQLClient(API_URL)
+
+export const entityName = (resource: string) =>
+  capitalize(camelCase(pluralize.singular(resource)))
 
 export const generateSort = (sorters: CrudSorting = []) => {
   const [sort] = sorters
@@ -29,11 +31,13 @@ export const generateFilter = (filters: CrudFilters = []) => {
   const queryFilters: { [key: string]: any } = {}
 
   for (const filter of filters) {
-    if (
-      filter.operator !== "or" &&
-      filter.operator !== "and" &&
-      "field" in filter
-    ) {
+    if (filter.operator === "or" || filter.operator === "and") {
+      queryFilters[filter.operator] = (filter.value as LogicalFilter[]).map(
+        ({ field, operator, value }) => ({
+          [`${field}_${operator}`]: value,
+        }),
+      )
+    } else if ("field" in filter) {
       const { field, operator, value } = filter
 
       if (operator === "eq") {
@@ -41,22 +45,31 @@ export const generateFilter = (filters: CrudFilters = []) => {
       } else {
         queryFilters[`${field}_${operator}`] = value
       }
-    } else {
-      queryFilters[filter.operator] = (filter.value as LogicalFilter[]).map(
-        ({ field, operator, value }) => ({
-          [`${field}_${operator}`]: value,
-        }),
-      )
     }
   }
 
   return queryFilters
 }
 
-export const dataProvider = (
-  client: GraphQLClient,
-): Required<DataProvider> => ({
+export const dataProvider: Required<DataProvider> = {
   getApiUrl: () => process.env.NEXT_PUBLIC_SUBGRAPH_URL!,
+
+  create: async ({ variables, meta }) => {
+    if (typeof meta?.action !== "function") {
+      throw new Error("Invalid meta.action")
+    }
+
+    const signer = await fetchSigner()
+    if (!signer) {
+      throw new Error("Please connect your wallet first.")
+    }
+
+    const data = {
+      id: await meta.action(signer, variables as any),
+    } as any
+
+    return { data }
+  },
 
   getList: async ({ resource, pagination, sorters, filters, meta }) => {
     const { current = 1, pageSize = 10, mode = "server" } = pagination ?? {}
@@ -64,25 +77,35 @@ export const dataProvider = (
     const sortBy = generateSort(sorters)
     const filterBy = generateFilter(filters)
 
-    const camelResource = camelCase(resource)
+    const entity = entityName(resource)
+    const operation = meta?.operation ?? pluralize(camelCase(resource))
+    const where =
+      size(filterBy) !== 0
+        ? { where: { value: filterBy, type: `${entity}_filter` } }
+        : {}
 
-    const operation = meta?.operation ?? pluralize(camelResource)
+    let fields = meta?.fields
+    if (!fields) {
+      fields = ["id"]
+      console.warn(`dataProvider-${resource} No fields passed to meta.fields`)
+      console.info(`dataProvider-${resource} Defaulting to meta.fields: ['id']`)
+      throw Error("Invalid meta.fields")
+    }
 
     const { query, variables } = gql.query({
       operation,
-      fields: meta?.fields,
+      fields,
       variables: {
         ...meta?.variables,
+        ...where,
         ...sortBy,
-        where: filterBy,
-        // where: { value: filterBy, type: `${entity}_filter` },
         ...(mode === "server"
           ? { skip: (current - 1) * pageSize, limit: pageSize }
           : {}),
       },
     })
 
-    const response = await client.request(query, variables)
+    const response = await gqlClient.request(query, variables)
 
     return {
       data: response[operation],
@@ -107,7 +130,7 @@ export const dataProvider = (
       },
     })
 
-    const response = await client.request(query, variables)
+    const response = await gqlClient.request(query, variables)
 
     return {
       data: response[operation],
@@ -122,24 +145,19 @@ export const dataProvider = (
 
     const { query, variables } = gql.query({
       operation,
-      variables: {
-        id: { value: id, required: true },
-      },
-      fields: meta?.fields,
+      variables: { id: { value: id, required: true } },
+      fields: meta?.fields ?? ["id"],
     })
 
-    const response = await client.request(query, variables)
+    const response = await gqlClient.request(query, variables)
 
     return {
       data: response[operation],
     }
   },
-  custom: async ({ url, method, headers, meta }) => {
-    let gqlClient = client
 
-    if (url) {
-      gqlClient = new GraphQLClient(url, { headers })
-    }
+  custom: async ({ url, method, headers, meta }) => {
+    const client = url ? new GraphQLClient(url, { headers }) : gqlClient
 
     if (!meta?.operation || !meta?.fields || !meta?.variables) {
       throw Error(
@@ -154,7 +172,7 @@ export const dataProvider = (
         variables: meta.variables,
       })
 
-      const response = await gqlClient.request(query, variables)
+      const response = await client.request(query, variables)
 
       return {
         data: response[meta.operation],
@@ -166,7 +184,7 @@ export const dataProvider = (
         variables: meta.variables,
       })
 
-      const response = await gqlClient.request(query, variables)
+      const response = await client.request(query, variables)
 
       return {
         data: response[meta.operation],
@@ -174,190 +192,9 @@ export const dataProvider = (
     }
   },
 
-  create: async ({ resource, variables, meta }) => {
-    const signer = await fetchSigner()
-    if (!signer) {
-      throw Error("No signer found")
-    }
-
-    const action = {
-      regenerator: mintRegenerator,
-      evaluator: mintEvaluator,
-      claim: claim,
-      accreditation: accredit,
-    }[resource]
-
-    if (!action) {
-      throw Error("No action found")
-    }
-
-    const data = {
-      id: await action(variables as any),
-    } as any
-
-    return { data }
-  },
   createMany: async ({ resource, variables, meta }) => ({ data: [] }),
   update: async ({ resource, id, variables, meta }) => ({ data: null as any }),
   updateMany: async ({ resource, ids, variables, meta }) => ({ data: [] }),
   deleteOne: async ({ resource, id, meta }) => ({ data: null as any }),
   deleteMany: async ({ resource, ids, meta }) => ({ data: [] }),
-})
-
-interface MintGroupVariables {
-  name: string
-  description: string
-  fileList: File[]
-}
-
-const groupMinter =
-  (contractName: "Regenerator" | "Evaluator") =>
-  async (variables: MintGroupVariables) => {
-    const signer = await fetchSigner()
-    if (!signer) {
-      throw Error("No signer found")
-    }
-
-    const { name, description, fileList } = variables
-
-    const uri = await ipfs.upload([
-      ...fileList,
-      ipfs.metadataFile({ name, description }),
-    ])
-
-    const contract = actions[`get${contractName}s`]({
-      address: "0x0", // TODO
-      signerOrProvider: signer,
-    })
-
-    const [tx, address] = await Promise.all([
-      contract.mint(uri),
-      signer.getAddress(),
-    ])
-
-    const receipt = await tx.wait()
-
-    return receipt.logs
-      .map(contract.interface.parseLog)
-      .find(
-        log =>
-          log.name === "Transfer" &&
-          log.args.from === AddressZero &&
-          log.args.to === address,
-      )
-      ?.args?.id?.toHexString()
-  }
-
-const mintRegenerator = groupMinter("Regenerator")
-const mintEvaluator = groupMinter("Evaluator")
-
-interface ClaimVariables {
-  regeneratorID: string
-  value: number
-  validFrom: number
-  validTo: number
-  fileList: File[]
-}
-
-const claim = async ({
-  regeneratorID,
-  value,
-  validFrom,
-  validTo,
-  fileList,
-}: ClaimVariables) => {
-  const signer = await fetchSigner()
-  if (!signer) {
-    throw Error("No signer found")
-  }
-
-  const [cid, address] = await Promise.all([
-    ipfs.upload(fileList),
-    signer.getAddress(),
-  ])
-
-  const contract = actions.getCap({
-    address: "0x0", // TODO
-    signerOrProvider: signer,
-  })
-
-  const tx = await contract.claim({
-    regeneratorID: BigNumber.from(regeneratorID),
-    attestation: {
-      signer: address as Address,
-      value: BigNumber.from(value),
-      validFrom: BigNumber.from(validFrom),
-      validTo: BigNumber.from(validTo),
-      uri: cid,
-    },
-  })
-
-  const receipt = await tx.wait()
-
-  return receipt.logs
-    .map(contract.interface.parseLog)
-    .find(
-      log =>
-        log.name === "Claim" &&
-        log.args.regeneratorID === BigNumber.from(regeneratorID) &&
-        log.args.attestation.signer === address,
-    )
-    ?.args?.claimID?.toHexString()
-}
-
-interface AccreditVariables {
-  claimID: string
-  evaluatorID: string
-  value: number
-  validFrom: number
-  validTo: number
-  fileList: File[]
-}
-
-const accredit = async ({
-  claimID,
-  evaluatorID,
-  value,
-  validFrom,
-  validTo,
-  fileList,
-}: AccreditVariables) => {
-  const signer = await fetchSigner()
-  if (!signer) {
-    throw Error("No signer found")
-  }
-
-  const [cid, address] = await Promise.all([
-    ipfs.upload(fileList),
-    signer.getAddress(),
-  ])
-
-  const contract = actions.getCap({
-    address: "0x0", // TODO
-    signerOrProvider: signer,
-  })
-
-  const tx = await contract.accredit({
-    claimID: BigNumber.from(claimID),
-    evaluatorID: BigNumber.from(evaluatorID),
-    attestation: {
-      signer: address as Address,
-      value: BigNumber.from(value),
-      validFrom: BigNumber.from(validFrom),
-      validTo: BigNumber.from(validTo),
-      uri: cid,
-    },
-  })
-
-  const receipt = await tx.wait()
-
-  return receipt.logs
-    .map(contract.interface.parseLog)
-    .find(
-      log =>
-        log.name === "Accredit" &&
-        log.args.claimID === BigNumber.from(claimID) &&
-        log.args.attestation.signer === address,
-    )
-    ?.args?.accreditationID?.toHexString()
 }

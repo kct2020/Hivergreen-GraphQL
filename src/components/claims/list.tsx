@@ -1,80 +1,62 @@
-import { Claim } from "@cap/sdk/graph"
-import {
-  DateField,
-  EditButton,
-  ShowButton,
-  getDefaultSortOrder,
-  useTable,
-} from "@refinedev/antd"
-import {
-  CrudFilters,
-  GetListResponse,
-  HttpError,
-  IResourceComponentsProps,
-} from "@refinedev/core"
-import { DatePicker, Space, Table } from "antd"
+import type { Claim } from "@cap/sdk/graph"
+import { ShowButton, getDefaultSortOrder } from "@refinedev/antd"
+import { CrudSorting } from "@refinedev/core"
+import { Table, TableProps } from "antd"
+import dayjs from "dayjs"
+import { useRouter } from "next/router"
 
-import { claimFields } from "./index"
-
-interface FilterVariables {
-  valid: [string, string]
-  regenerators: string[]
+export interface ClaimListProps {
+  tableProps: TableProps<Claim>
+  sorters: CrudSorting
 }
 
-export const ClaimList: React.FC<
-  IResourceComponentsProps<GetListResponse<Claim>>
-> = () => {
-  const { tableProps, sorters } = useTable<Claim, HttpError, FilterVariables>({
-    meta: {
-      fields: claimFields,
-    },
-    pagination: {
-      pageSize: 25,
-    },
-    sorters: {
-      initial: [{ field: "createdAt", order: "desc" }],
-    },
-    onSearch(data) {
-      const filters: CrudFilters = []
-
-      if (data.regenerators.length) {
-        filters.push({
-          field: "regenerator",
-          operator: "in",
-          value: data.regenerators,
-        })
-      }
-
-      return filters
-    },
-  })
+export const ClaimList: React.FC<ClaimListProps> = ({
+  tableProps,
+  sorters,
+}) => {
+  const router = useRouter()
 
   return (
     <Table {...tableProps} rowKey="id">
-      <Table.Column dataIndex="id" title="ID" />
-      <Table.Column dataIndex="value" title="Value" />
       <Table.Column
         dataIndex="createdAt"
         title="Created At"
-        render={value => <DateField format="LLL" value={value} />}
+        render={value => dayjs(parseInt(value)).format("LLL")}
+        sorter
         defaultSortOrder={getDefaultSortOrder("createdAt", sorters)}
       />
-      <Table.Column dataIndex="signer" title="Signer" />
+      <Table.Column dataIndex="id" title="ID" />
       <Table.Column<Claim>
-        dataIndex="valid"
         title="Time Range"
-        render={(_, record) => (
-          <DatePicker.RangePicker value={[record.validFrom, record.validTo]} />
-        )}
+        render={(_, record) =>
+          [record.validFrom, record.validTo]
+            .map(date => dayjs(parseInt(date)).format("LL"))
+            .join(" – ")
+        }
       />
+      <Table.Column dataIndex="value" title="Value" />
+      {router.asPath.includes("claim") && (
+        <Table.Column<Claim>
+          dataIndex={["regenerator", "id"]}
+          title="Regenerator"
+          render={(value, record) => (
+            <ShowButton
+              recordItemId={record.id}
+              resource="regenerator"
+              size="small"
+            >
+              {value}
+            </ShowButton>
+          )}
+        />
+      )}
       <Table.Column<Claim>
         title="Actions"
         dataIndex="actions"
         render={(_, record) => (
-          <Space>
-            <EditButton hideText size="small" recordItemId={record.id} />
-            <ShowButton hideText size="small" recordItemId={record.id} />
-          </Space>
+          <ShowButton recordItemId={record.id} resource="claim" size="small">
+            View
+          </ShowButton>
         )}
       />
     </Table>

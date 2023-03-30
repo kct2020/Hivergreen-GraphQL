@@ -1,48 +1,55 @@
 "use client"
 
-import { InboxOutlined, PlusCircleOutlined } from "@ant-design/icons"
-import type { Claim, Regenerator } from "@cap/sdk/graph"
-import { ClaimList } from "@components/claims/list"
+import { CheckCircleOutlined, InboxOutlined } from "@ant-design/icons"
+import { Claim, Credit, Methodology } from "@cap/sdk/graph"
+import { CreditList } from "@components/credits/list"
 import { queryClient } from "@contexts/web3"
 import { useModalForm, useSelect, useTable } from "@refinedev/antd"
 import { List } from "@refinedev/antd"
-import { HttpError } from "@refinedev/core"
+import { CrudFilters, HttpError } from "@refinedev/core"
 import { DatePicker, Form, InputNumber, Select, Upload } from "antd"
 import { Modal } from "antd"
 import { useSIWE } from "connectkit"
 import { useRouter } from "next/router"
 import type { RefinePage } from "pages/_app"
 import React from "react"
-import { claim } from "src/mutations/attestations"
+import { accredit } from "src/mutations/attestations"
 
 export { getServerSideProps } from "@lib/i18nSSR"
 
-const ClaimIndexPage: RefinePage = () => {
+const CreditIndexPage: RefinePage = () => {
   const router = useRouter()
 
-  const { modalProps, formProps, show, close } = useModalForm<Claim>({
+  const { modalProps, formProps, show, close } = useModalForm<Credit>({
     action: "create",
     defaultVisible: Boolean(router.query.create),
     submitOnEnter: true,
-    meta: { action: claim, fields: ["id"] },
+    meta: { action: accredit, fields: ["id"] },
     onMutationSuccess() {
       queryClient.invalidateQueries({
         exact: true,
-        queryKey: ["default", "claims"],
+        queryKey: ["default", "credits"],
       })
     },
   })
 
+  const { selectProps: claimSelectProps } = useSelect<Claim>({
+    resource: "claims",
+    optionValue: "id",
+    meta: { fields: ["id"] },
+    onSearch: value => [{ field: "id", operator: "contains", value }],
+  })
+
   const { data: account } = useSIWE()
-  const { selectProps } = useSelect<Regenerator>({
-    resource: "regenerators",
+  const { selectProps: methodologySelectProps } = useSelect<Methodology>({
+    resource: "methodologies",
     optionValue: "id",
     filters: [{ field: "owner", operator: "eq", value: account?.address }],
     meta: { fields: ["id", { owner: ["id"] }] },
-    onSearch: value => [{ field: "name", operator: "contains", value }],
+    onSearch: value => [{ field: "id", operator: "contains", value }],
   })
 
-  const { tableProps, sorters } = useTable<Claim, HttpError>({
+  const { tableProps, sorters } = useTable<Credit, HttpError>({
     meta: {
       fields: [
         "id",
@@ -52,7 +59,8 @@ const ClaimIndexPage: RefinePage = () => {
         "validTo",
         "createdAt",
         { signer: ["id"] },
-        { regenerator: ["id"] },
+        { claim: [{ regenerator: ["id"] }] },
+        { methodology: ["id"] },
       ],
     },
     pagination: {
@@ -68,8 +76,10 @@ const ClaimIndexPage: RefinePage = () => {
 
   return (
     <>
-      <List createButtonProps={{ onClick: show, icon: <PlusCircleOutlined /> }}>
-        <ClaimList tableProps={tableProps} sorters={sorters} />
+      <List
+        createButtonProps={{ onClick: show, icon: <CheckCircleOutlined /> }}
+      >
+        <CreditList tableProps={tableProps} sorters={sorters} />
       </List>
       <Modal
         {...modalProps}
@@ -78,12 +88,19 @@ const ClaimIndexPage: RefinePage = () => {
         destroyOnClose
       >
         <Form {...formProps} layout="vertical" requiredMark="optional">
+          <Form.Item name="claimID" label="Claim" rules={[{ required: true }]}>
+            <Select {...claimSelectProps} showSearch placeholder="Claim" />
+          </Form.Item>
           <Form.Item
-            name="regeneratorID"
-            label="Regenerator"
+            name="methodologyID"
+            label="Methodology"
             rules={[{ required: true }]}
           >
-            <Select {...selectProps} showSearch placeholder="Regenerator" />
+            <Select
+              {...methodologySelectProps}
+              showSearch
+              placeholder="Methodology"
+            />
           </Form.Item>
           <Form.Item
             name="impactAmount"
@@ -132,4 +149,4 @@ const ClaimIndexPage: RefinePage = () => {
   )
 }
 
-export default ClaimIndexPage
+export default CreditIndexPage
