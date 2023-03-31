@@ -15,10 +15,9 @@ import NProgress from "nprogress"
 import { Suspense, useEffect, useState } from "react"
 import { Layout } from "src/layout"
 import { Header } from "src/layout/header"
+import { LoadingPage, LoadingPane } from "src/layout/loading"
 import { Sider } from "src/layout/sider"
 import { Title } from "src/layout/title"
-
-import { LoadingPage, LoadingPane } from "./loading"
 
 const Web3App = dynamic(() => import("@contexts/web3"), { ssr: false })
 const RefineApp = dynamic(() => import("@contexts/refine"), { ssr: false })
