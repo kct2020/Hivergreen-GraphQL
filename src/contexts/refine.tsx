@@ -15,7 +15,6 @@ import { useSIWE } from "connectkit"
 import { AnimatePresence, LazyMotion, domAnimation, m } from "framer-motion"
 import { useTranslation } from "next-i18next"
 import Router from "next/router"
-import NProgress from "nprogress"
 import React, { useEffect, useMemo, useState } from "react"
 
 export const RouteTransitions: React.FC<React.PropsWithChildren> = ({
@@ -26,12 +25,10 @@ export const RouteTransitions: React.FC<React.PropsWithChildren> = ({
   useEffect(() => {
     const onStart = () => {
       setLoading(true)
-      NProgress.start()
     }
 
     const onSettled = () => {
       setLoading(false)
-      NProgress.done()
       window.scroll({ behavior: "smooth", top: 0, left: 0 })
     }
 
