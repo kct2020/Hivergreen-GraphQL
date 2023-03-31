@@ -25,17 +25,14 @@ const RegeneratorIndexPage: RefinePage = () => {
     submitOnEnter: true,
     meta: { action: mintRegenerator },
     onMutationSuccess() {
-      queryClient.invalidateQueries({
-        exact: true,
-        queryKey: ["default", "regenerators"],
-      })
+      queryClient.invalidateQueries({ queryKey: ["default", "regenerators"] })
     },
   })
 
   return (
     <>
       <Head>
-        <title>CAP | Regenerators</title>
+        <title>Regenerators</title>
       </Head>
       <List createButtonProps={{ onClick: show, icon: <CompassOutlined /> }}>
         <RegeneratorList />

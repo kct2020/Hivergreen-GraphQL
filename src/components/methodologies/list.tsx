@@ -13,13 +13,17 @@ import {
 } from "@refinedev/core"
 import { Space, Table } from "antd"
 import dayjs from "dayjs"
-import { Address, useAccount } from "wagmi"
+import { useCallback } from "react"
+import { useAccount } from "wagmi"
 
 export const MethodologyList: React.FC<
   IResourceComponentsProps<GetListResponse>
 > = () => {
   const { address: account } = useAccount()
-  const isOwner = (record: Methodology) => account === record.owner.id
+  const isOwner = useCallback(
+    (record: Methodology) => account === record.owner.id,
+    [account],
+  )
 
   const { tableProps, sorters } = useTable<Methodology, HttpError>({
     resource: "methodology",

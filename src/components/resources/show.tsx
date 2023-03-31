@@ -10,7 +10,7 @@ export const Show: React.FC<RefineShowProps> = props => {
     <>
       {props.title && (
         <Head>
-          <title>CAP | {props.title}</title>
+          <title>{props.title}</title>
         </Head>
       )}
       <RefineShow {...props} />

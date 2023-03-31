@@ -6,7 +6,7 @@ import { CreditList } from "@components/credits/list"
 import { Show } from "@components/resources/show"
 import * as ipfs from "@lib/ipfs"
 import { useTable } from "@refinedev/antd"
-import { HttpError, useShow } from "@refinedev/core"
+import { HttpError, useCan, useShow } from "@refinedev/core"
 import { Button, Col, Row, Statistic, Typography } from "antd"
 import type { NextPage } from "next"
 
@@ -46,11 +46,22 @@ const MethodologyShowPage: NextPage = () => {
     },
   })
 
-  const record = data?.data
+  const methodology = data?.data
+
+  const { data: editAuth } = useCan({
+    resource: "regenerators",
+    action: "edit",
+    params: methodology,
+    queryOptions: { enabled: !!methodology },
+  })
 
   return (
-    <Show isLoading={!record} title={record?.name}>
-      {record && (
+    <Show
+      isLoading={!methodology}
+      title={methodology?.name}
+      canEdit={editAuth?.can}
+    >
+      {methodology && (
         <>
           <Row gutter={16}>
             <Col span={5}>
@@ -60,7 +71,7 @@ const MethodologyShowPage: NextPage = () => {
                   <Button
                     type="primary"
                     icon={<FileSearchOutlined />}
-                    href={record.uri ? ipfs.viewURL(record.uri) : "#"}
+                    href={methodology.uri ? ipfs.viewURL(methodology.uri) : "#"}
                     target="_blank"
                   >
                     View Documents
@@ -69,7 +80,7 @@ const MethodologyShowPage: NextPage = () => {
               />
             </Col>
             <Col span={5}>
-              <Statistic title="Owner" value={record.owner.id} />
+              <Statistic title="Owner" value={methodology.owner.id} />
             </Col>
           </Row>
           <Typography.Title

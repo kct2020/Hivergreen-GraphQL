@@ -27,10 +27,7 @@ const CreditIndexPage: RefinePage = () => {
     submitOnEnter: true,
     meta: { action: accredit, fields: ["id"] },
     onMutationSuccess() {
-      queryClient.invalidateQueries({
-        exact: true,
-        queryKey: ["default", "credits"],
-      })
+      queryClient.invalidateQueries({ queryKey: ["default", "credits"] })
     },
   })
 
@@ -78,7 +75,7 @@ const CreditIndexPage: RefinePage = () => {
   return (
     <>
       <Head>
-        <title>CAP | Accredit</title>
+        <title>Accredit</title>
       </Head>
       <List
         createButtonProps={{ onClick: show, icon: <CheckCircleOutlined /> }}

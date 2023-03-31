@@ -6,7 +6,7 @@ import { ClaimList } from "@components/claims/list"
 import { Show } from "@components/resources/show"
 import * as ipfs from "@lib/ipfs"
 import { useTable } from "@refinedev/antd"
-import { HttpError, useShow } from "@refinedev/core"
+import { HttpError, useCan, useShow } from "@refinedev/core"
 import { Button, Col, Row, Statistic, Typography } from "antd"
 import type { NextPage } from "next"
 
@@ -48,8 +48,19 @@ const RegeneratorShowPage: NextPage = () => {
     },
   })
 
+  const { data: editAuth } = useCan({
+    resource: "regenerators",
+    action: "edit",
+    params: regenerator,
+    queryOptions: { enabled: !!regenerator },
+  })
+
   return (
-    <Show isLoading={!regenerator} title={regenerator?.name}>
+    <Show
+      isLoading={!regenerator}
+      title={regenerator?.name}
+      canEdit={editAuth?.can}
+    >
       {regenerator && (
         <>
           <Row gutter={16}>

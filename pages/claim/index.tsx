@@ -6,7 +6,7 @@ import { ClaimList } from "@components/claims/list"
 import { queryClient } from "@contexts/web3"
 import { useModalForm, useSelect, useTable } from "@refinedev/antd"
 import { List } from "@refinedev/antd"
-import { HttpError } from "@refinedev/core"
+import { HttpError, useCan } from "@refinedev/core"
 import { DatePicker, Form, InputNumber, Select, Upload } from "antd"
 import { Modal } from "antd"
 import { useSIWE } from "connectkit"
@@ -26,10 +26,7 @@ const ClaimIndexPage: RefinePage = () => {
     submitOnEnter: true,
     meta: { action: claim, fields: ["id"] },
     onMutationSuccess() {
-      queryClient.invalidateQueries({
-        exact: true,
-        queryKey: ["default", "claims"],
-      })
+      queryClient.invalidateQueries({ queryKey: ["default", "claims"] })
     },
   })
 
@@ -69,7 +66,7 @@ const ClaimIndexPage: RefinePage = () => {
   return (
     <>
       <Head>
-        <title>CAP | Claims</title>
+        <title>Claims</title>
       </Head>
       <List createButtonProps={{ onClick: show, icon: <PlusCircleOutlined /> }}>
         <ClaimList tableProps={tableProps} sorters={sorters} />

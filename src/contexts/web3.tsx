@@ -17,7 +17,7 @@ export const chains = [polygon]
 export const queryClient = new QueryClient()
 
 export const wagmiClient = createClient({
-  ...getDefaultClient({ appName: "CAP", chains, alchemyId }),
+  ...getDefaultClient({ appName: "🧢", chains, alchemyId }),
   queryClient,
 })
 

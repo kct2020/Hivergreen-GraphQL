@@ -1,8 +1,8 @@
+import { makeAuthProvider } from "@lib/authProvider"
 import { getSession } from "@lib/siwe"
 import { ErrorComponent } from "@refinedev/antd"
 import { GetServerSideProps } from "next"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
-import { makeAuthProvider } from "src/authProvider"
 
 export default ErrorComponent
 

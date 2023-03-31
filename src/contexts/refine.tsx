@@ -1,6 +1,9 @@
 "use client"
 
 import { queryClient } from "@contexts/web3"
+import { makeAccessControlProvider } from "@lib/accessControlProvider"
+import { makeAuthProvider } from "@lib/authProvider"
+import { dataProvider } from "@lib/dataProvider"
 import { resources } from "@lib/resources"
 import { notificationProvider } from "@refinedev/antd"
 import { Refine } from "@refinedev/core"
@@ -14,8 +17,6 @@ import { useTranslation } from "next-i18next"
 import Router from "next/router"
 import NProgress from "nprogress"
 import React, { useEffect, useMemo, useState } from "react"
-import { makeAuthProvider } from "src/authProvider"
-import { dataProvider } from "src/dataProvider"
 
 export const RouteTransitions: React.FC<React.PropsWithChildren> = ({
   children,
@@ -81,6 +82,10 @@ export const RefineApp: React.FC<React.PropsWithChildren> = ({ children }) => {
   const siwe = useSIWE()
 
   const authProvider = useMemo(() => makeAuthProvider(siwe), [siwe])
+  const accessControlProvider = useMemo(
+    () => makeAccessControlProvider(siwe),
+    [siwe],
+  )
 
   return (
     <RefineKbarProvider>
@@ -88,6 +93,7 @@ export const RefineApp: React.FC<React.PropsWithChildren> = ({ children }) => {
         routerProvider={routerProvider}
         dataProvider={dataProvider}
         notificationProvider={notificationProvider}
+        accessControlProvider={accessControlProvider}
         authProvider={authProvider}
         i18nProvider={i18nProvider}
         resources={resources}

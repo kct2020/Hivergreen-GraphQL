@@ -65,7 +65,7 @@ const ClaimShowPage: NextPage = () => {
     <Show
       isLoading={!claim}
       title={`Claim ${claim?.id ?? null}`}
-      goBack={false}
+      canEdit={false}
     >
       {claim && (
         <>

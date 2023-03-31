@@ -25,17 +25,14 @@ const MethodologyIndexPage: NextPage = () => {
     submitOnEnter: true,
     meta: { action: mintMethodology },
     onMutationSuccess() {
-      queryClient.invalidateQueries({
-        exact: true,
-        queryKey: ["default", "methodologies"],
-      })
+      queryClient.invalidateQueries({ queryKey: ["default", "methodologies"] })
     },
   })
 
   return (
     <>
       <Head>
-        <title>CAP | Methodologies</title>
+        <title>Methodologies</title>
       </Head>
       <List
         createButtonProps={{ onClick: show, icon: <DeploymentUnitOutlined /> }}

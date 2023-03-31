@@ -13,13 +13,17 @@ import {
 } from "@refinedev/core"
 import { Space, Table } from "antd"
 import dayjs from "dayjs"
+import { useCallback } from "react"
 import { useAccount } from "wagmi"
 
 export const RegeneratorList: React.FC<
   IResourceComponentsProps<GetListResponse>
 > = () => {
   const { address: account } = useAccount()
-  const isOwner = (record: Regenerator) => account === record.owner.id
+  const isOwner = useCallback(
+    (record: Regenerator) => account === record.owner.id,
+    [account],
+  )
 
   const { tableProps, sorters } = useTable<Regenerator, HttpError>({
     resource: "regenerator",
