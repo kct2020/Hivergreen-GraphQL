@@ -3,8 +3,9 @@
 import { FileSearchOutlined } from "@ant-design/icons"
 import type { Claim, Credit } from "@cap/sdk/graph"
 import { CreditList } from "@components/credits/list"
+import { Show } from "@components/resources/show"
 import * as ipfs from "@lib/ipfs"
-import { Show, ShowButton, useTable } from "@refinedev/antd"
+import { ShowButton, useTable } from "@refinedev/antd"
 import { HttpError, useShow } from "@refinedev/core"
 import { Button, Col, Row, Statistic, Typography } from "antd"
 import dayjs from "dayjs"
@@ -61,7 +62,11 @@ const ClaimShowPage: NextPage = () => {
   })
 
   return (
-    <Show isLoading={!claim} title={`Claim ${claim?.id ?? null}`}>
+    <Show
+      isLoading={!claim}
+      title={`Claim ${claim?.id ?? null}`}
+      goBack={false}
+    >
       {claim && (
         <>
           <Row gutter={16}>

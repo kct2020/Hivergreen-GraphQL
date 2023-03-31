@@ -10,6 +10,7 @@ import { HttpError } from "@refinedev/core"
 import { DatePicker, Form, InputNumber, Select, Upload } from "antd"
 import { Modal } from "antd"
 import { useSIWE } from "connectkit"
+import Head from "next/head"
 import { useRouter } from "next/router"
 import type { RefinePage } from "pages/_app"
 import React from "react"
@@ -59,7 +60,7 @@ const CreditIndexPage: RefinePage = () => {
         "validTo",
         "createdAt",
         { signer: ["id"] },
-        { claim: [{ regenerator: ["id"] }] },
+        { claim: ["id", { regenerator: ["id"] }] },
         { methodology: ["id"] },
       ],
     },
@@ -76,6 +77,9 @@ const CreditIndexPage: RefinePage = () => {
 
   return (
     <>
+      <Head>
+        <title>CAP | Accredit</title>
+      </Head>
       <List
         createButtonProps={{ onClick: show, icon: <CheckCircleOutlined /> }}
       >
@@ -109,7 +113,7 @@ const CreditIndexPage: RefinePage = () => {
           >
             <InputNumber
               controls={false}
-              addonAfter="tCO2e"
+              addonAfter="Credits"
               style={{ width: "100%" }}
             />
           </Form.Item>

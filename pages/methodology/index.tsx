@@ -9,6 +9,7 @@ import { List } from "@refinedev/antd"
 import { Form, Input, Upload } from "antd"
 import { Modal } from "antd"
 import { NextPage } from "next"
+import Head from "next/head"
 import { useRouter } from "next/router"
 import React from "react"
 import { mintMethodology } from "src/mutations/group"
@@ -33,6 +34,9 @@ const MethodologyIndexPage: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>CAP | Methodologies</title>
+      </Head>
       <List
         createButtonProps={{ onClick: show, icon: <DeploymentUnitOutlined /> }}
       >

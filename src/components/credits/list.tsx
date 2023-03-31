@@ -4,6 +4,7 @@ import { CrudSorting } from "@refinedev/core"
 import { Table, TableProps } from "antd"
 import dayjs from "dayjs"
 import { useRouter } from "next/router"
+import { useCallback, useMemo } from "react"
 
 export interface CreditListProps {
   tableProps: TableProps<Credit>
@@ -15,6 +16,10 @@ export const CreditList: React.FC<CreditListProps> = ({
   sorters,
 }) => {
   const router = useRouter()
+  const isCurrentResource = useCallback(
+    (path: string) => router.asPath.includes(path),
+    [router.asPath],
+  )
 
   return (
     <Table {...tableProps} rowKey="id">
@@ -25,7 +30,6 @@ export const CreditList: React.FC<CreditListProps> = ({
         sorter
         defaultSortOrder={getDefaultSortOrder("createdAt", sorters)}
       />
-      <Table.Column dataIndex="id" title="ID" />
       <Table.Column<Credit>
         title="Time Range"
         render={(_, record) =>
@@ -35,7 +39,7 @@ export const CreditList: React.FC<CreditListProps> = ({
         }
       />
       <Table.Column dataIndex="value" title="Value" />
-      {!router.asPath.includes("claim") && (
+      {/* {!isCurrentResource("regenerator") && (
         <Table.Column<Credit>
           dataIndex={["claim", "regenerator", "id"]}
           title="Regenerator"
@@ -49,22 +53,8 @@ export const CreditList: React.FC<CreditListProps> = ({
             </ShowButton>
           )}
         />
-      )}
-      {router.asPath.includes("methodology") ? (
-        <Table.Column<Credit>
-          dataIndex={["claim", "id"]}
-          title="Claim"
-          render={(value, record) => (
-            <ShowButton
-              recordItemId={record.claim.id}
-              resource="claim"
-              size="small"
-            >
-              {value}
-            </ShowButton>
-          )}
-        />
-      ) : (
+      )} */}
+      {!isCurrentResource("methodology") && (
         <Table.Column<Credit>
           dataIndex={["methodology", "id"]}
           title="Methodology"
@@ -72,6 +62,21 @@ export const CreditList: React.FC<CreditListProps> = ({
             <ShowButton
               recordItemId={record.methodology.id}
               resource="methodology"
+              size="small"
+            >
+              {value}
+            </ShowButton>
+          )}
+        />
+      )}
+      {!isCurrentResource("claim") && (
+        <Table.Column<Credit>
+          dataIndex={["claim", "id"]}
+          title="Claim"
+          render={(value, record) => (
+            <ShowButton
+              recordItemId={record.claim.id}
+              resource="claim"
               size="small"
             >
               {value}

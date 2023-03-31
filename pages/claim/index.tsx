@@ -10,6 +10,7 @@ import { HttpError } from "@refinedev/core"
 import { DatePicker, Form, InputNumber, Select, Upload } from "antd"
 import { Modal } from "antd"
 import { useSIWE } from "connectkit"
+import Head from "next/head"
 import { useRouter } from "next/router"
 import type { RefinePage } from "pages/_app"
 import React from "react"
@@ -67,6 +68,9 @@ const ClaimIndexPage: RefinePage = () => {
 
   return (
     <>
+      <Head>
+        <title>CAP | Claims</title>
+      </Head>
       <List createButtonProps={{ onClick: show, icon: <PlusCircleOutlined /> }}>
         <ClaimList tableProps={tableProps} sorters={sorters} />
       </List>
@@ -91,7 +95,7 @@ const ClaimIndexPage: RefinePage = () => {
           >
             <InputNumber
               controls={false}
-              addonAfter="tCO2e"
+              addonAfter="Claims"
               style={{ width: "100%" }}
             />
           </Form.Item>

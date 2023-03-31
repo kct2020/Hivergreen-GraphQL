@@ -3,8 +3,9 @@
 import { FileSearchOutlined } from "@ant-design/icons"
 import type { Credit, Methodology } from "@cap/sdk/graph"
 import { CreditList } from "@components/credits/list"
+import { Show } from "@components/resources/show"
 import * as ipfs from "@lib/ipfs"
-import { Show, useTable } from "@refinedev/antd"
+import { useTable } from "@refinedev/antd"
 import { HttpError, useShow } from "@refinedev/core"
 import { Button, Col, Row, Statistic, Typography } from "antd"
 import type { NextPage } from "next"
@@ -48,7 +49,7 @@ const MethodologyShowPage: NextPage = () => {
   const record = data?.data
 
   return (
-    <Show isLoading={!record} title={`Methodology ${record?.id ?? null}`}>
+    <Show isLoading={!record} title={record?.name}>
       {record && (
         <>
           <Row gutter={16}>

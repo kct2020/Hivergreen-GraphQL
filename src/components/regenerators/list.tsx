@@ -13,10 +13,14 @@ import {
 } from "@refinedev/core"
 import { Space, Table } from "antd"
 import dayjs from "dayjs"
+import { useAccount } from "wagmi"
 
 export const RegeneratorList: React.FC<
   IResourceComponentsProps<GetListResponse>
 > = () => {
+  const { address: account } = useAccount()
+  const isOwner = (record: Regenerator) => account === record.owner.id
+
   const { tableProps, sorters } = useTable<Regenerator, HttpError>({
     resource: "regenerator",
     meta: {
@@ -45,15 +49,20 @@ export const RegeneratorList: React.FC<
         title="Updated At"
       />
       <Table.Column<Regenerator> dataIndex={["owner", "id"]} title="Owner" />
-      <Table.Column<Regenerator> dataIndex="id" title="ID" />
       <Table.Column<Regenerator>
-        dataIndex="actions"
-        render={(_, record) => (
+        dataIndex="id"
+        render={(id, record) => (
           <Space>
-            <ShowButton recordItemId={record.id} size="small">
-              View
+            <ShowButton resource="regenerator" recordItemId={id} size="small">
+              View {id}
             </ShowButton>
-            <EditButton recordItemId={record.id} size="small" />
+            {isOwner(record) && (
+              <EditButton
+                resource="regenerator"
+                recordItemId={id}
+                size="small"
+              />
+            )}
           </Space>
         )}
         title="Actions"

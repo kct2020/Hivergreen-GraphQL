@@ -3,8 +3,9 @@
 import { FileSearchOutlined } from "@ant-design/icons"
 import type { Claim, Regenerator } from "@cap/sdk/graph"
 import { ClaimList } from "@components/claims/list"
+import { Show } from "@components/resources/show"
 import * as ipfs from "@lib/ipfs"
-import { Show, useTable } from "@refinedev/antd"
+import { useTable } from "@refinedev/antd"
 import { HttpError, useShow } from "@refinedev/core"
 import { Button, Col, Row, Statistic, Typography } from "antd"
 import type { NextPage } from "next"
@@ -48,10 +49,7 @@ const RegeneratorShowPage: NextPage = () => {
   })
 
   return (
-    <Show
-      isLoading={!regenerator}
-      title={`Regenerator ${regenerator?.id ?? null}`}
-    >
+    <Show isLoading={!regenerator} title={regenerator?.name}>
       {regenerator && (
         <>
           <Row gutter={16}>

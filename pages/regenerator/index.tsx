@@ -8,6 +8,7 @@ import { useModalForm } from "@refinedev/antd"
 import { List } from "@refinedev/antd"
 import { Form, Input, Upload } from "antd"
 import { Modal } from "antd"
+import Head from "next/head"
 import { useRouter } from "next/router"
 import type { RefinePage } from "pages/_app"
 import React from "react"
@@ -33,6 +34,9 @@ const RegeneratorIndexPage: RefinePage = () => {
 
   return (
     <>
+      <Head>
+        <title>CAP | Regenerators</title>
+      </Head>
       <List createButtonProps={{ onClick: show, icon: <CompassOutlined /> }}>
         <RegeneratorList />
       </List>

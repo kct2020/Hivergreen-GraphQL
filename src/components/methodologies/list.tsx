@@ -13,10 +13,14 @@ import {
 } from "@refinedev/core"
 import { Space, Table } from "antd"
 import dayjs from "dayjs"
+import { Address, useAccount } from "wagmi"
 
 export const MethodologyList: React.FC<
   IResourceComponentsProps<GetListResponse>
 > = () => {
+  const { address: account } = useAccount()
+  const isOwner = (record: Methodology) => account === record.owner.id
+
   const { tableProps, sorters } = useTable<Methodology, HttpError>({
     resource: "methodology",
     meta: {
@@ -45,24 +49,21 @@ export const MethodologyList: React.FC<
         )}
       />
       <Table.Column<Methodology> dataIndex={["owner", "id"]} title="Owner" />
-      <Table.Column<Methodology> dataIndex="id" title="ID" />
       <Table.Column<Methodology>
         title="Actions"
-        dataIndex="actions"
-        render={(_, record) => (
+        dataIndex="id"
+        render={(id, record) => (
           <Space>
-            <ShowButton
-              recordItemId={record.id}
-              resource="methodology"
-              size="small"
-            >
-              View
+            <ShowButton recordItemId={id} resource="methodology" size="small">
+              View {id}
             </ShowButton>
-            <EditButton
-              recordItemId={record.id}
-              resource="methodology"
-              size="small"
-            />
+            {isOwner(record) && (
+              <EditButton
+                recordItemId={id}
+                resource="methodology"
+                size="small"
+              />
+            )}
           </Space>
         )}
       />

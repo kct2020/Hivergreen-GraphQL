@@ -25,7 +25,6 @@ export const ClaimList: React.FC<ClaimListProps> = ({
         sorter
         defaultSortOrder={getDefaultSortOrder("createdAt", sorters)}
       />
-      <Table.Column dataIndex="id" title="ID" />
       <Table.Column<Claim>
         title="Time Range"
         render={(_, record) =>
@@ -52,10 +51,10 @@ export const ClaimList: React.FC<ClaimListProps> = ({
       )}
       <Table.Column<Claim>
         title="Actions"
-        dataIndex="actions"
-        render={(_, record) => (
-          <ShowButton recordItemId={record.id} resource="claim" size="small">
-            View
+        dataIndex="id"
+        render={id => (
+          <ShowButton recordItemId={id} resource="claim" size="small">
+            {id}
           </ShowButton>
         )}
       />
