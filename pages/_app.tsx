@@ -1,6 +1,5 @@
 import "@refinedev/antd/dist/reset.css"
 import "@lib/i18n"
-import "nprogress/nprogress.css"
 import "@styles/global.css"
 
 import { theme } from "@lib/theme"
