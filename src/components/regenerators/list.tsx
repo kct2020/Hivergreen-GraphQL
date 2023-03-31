@@ -54,6 +54,7 @@ export const RegeneratorList: React.FC<
       />
       <Table.Column<Regenerator> dataIndex={["owner", "id"]} title="Owner" />
       <Table.Column<Regenerator>
+        title="Regenerator"
         dataIndex="id"
         render={(id, record) => (
           <Space>
@@ -69,7 +70,6 @@ export const RegeneratorList: React.FC<
             )}
           </Space>
         )}
-        title="Actions"
       />
     </Table>
   )

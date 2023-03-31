@@ -83,6 +83,7 @@ const CreditIndexPage: RefinePage = () => {
         <title>Accredit</title>
       </Head>
       <List
+        title="Accreditations"
         createButtonProps={{ onClick: show, icon: <CheckCircleOutlined /> }}
       >
         <CreditList tableProps={tableProps} sorters={sorters} />

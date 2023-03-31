@@ -50,7 +50,7 @@ export const ClaimList: React.FC<ClaimListProps> = ({
         />
       )}
       <Table.Column<Claim>
-        title="Actions"
+        title="Claim"
         dataIndex="id"
         render={id => (
           <ShowButton recordItemId={id} resource="claim" size="small">

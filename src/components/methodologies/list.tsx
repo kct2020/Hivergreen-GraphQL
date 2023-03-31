@@ -54,7 +54,7 @@ export const MethodologyList: React.FC<
       />
       <Table.Column<Methodology> dataIndex={["owner", "id"]} title="Owner" />
       <Table.Column<Methodology>
-        title="Actions"
+        title="Methodology"
         dataIndex="id"
         render={(id, record) => (
           <Space>
