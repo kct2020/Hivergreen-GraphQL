@@ -9,10 +9,68 @@ import routerProvider, {
   UnsavedChangesNotifier,
 } from "@refinedev/nextjs-router"
 import { useSIWE } from "connectkit"
+import { AnimatePresence, LazyMotion, domAnimation, m } from "framer-motion"
 import { useTranslation } from "next-i18next"
-import React, { useMemo } from "react"
+import Router from "next/router"
+import NProgress from "nprogress"
+import React, { useEffect, useMemo, useState } from "react"
 import { makeAuthProvider } from "src/authProvider"
 import { dataProvider } from "src/dataProvider"
+import { useEffectOnce } from "usehooks-ts"
+
+export const RouteTransitions: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
+  const [isLoading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const onStart = () => {
+      setLoading(true)
+      console.log(true)
+      NProgress.start()
+    }
+
+    const onSettled = () => {
+      setLoading(false)
+      console.log(false)
+      NProgress.done()
+      window.scroll({ behavior: "smooth", top: 0, left: 0 })
+    }
+
+    Router.events.on("routeChangeStart", onStart)
+    Router.events.on("routeChangeComplete", onSettled)
+    Router.events.on("routeChangeError", onSettled)
+
+    return () => {
+      Router.events.off("routeChangeStart", onStart)
+      Router.events.off("routeChangeComplete", onSettled)
+      Router.events.off("routeChangeError", onSettled)
+    }
+  }, [setLoading])
+
+  return (
+    <LazyMotion features={domAnimation}>
+      <AnimatePresence exitBeforeEnter>
+        <m.div
+          animate={isLoading ? "exit" : "enter"}
+          variants={{
+            enter: { opacity: 1 },
+            exit: { opacity: 0.4 },
+          }}
+          key={Router.pathname}
+          transition={{
+            type: "spring",
+            stiffness: 260,
+            damping: 20,
+            duration: 3,
+          }}
+        >
+          {children}
+        </m.div>
+      </AnimatePresence>
+    </LazyMotion>
+  )
+}
 
 export const RefineApp: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { t, i18n } = useTranslation()
@@ -43,7 +101,7 @@ export const RefineApp: React.FC<React.PropsWithChildren> = ({ children }) => {
           reactQuery: { clientConfig: queryClient },
         }}
       >
-        {children}
+        <RouteTransitions>{children}</RouteTransitions>
         <RefineKbar />
         <UnsavedChangesNotifier />
       </Refine>
