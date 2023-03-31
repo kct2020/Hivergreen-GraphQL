@@ -52,7 +52,7 @@ const MethodologyShowPage: NextPage = () => {
     resource: "regenerators",
     action: "edit",
     params: methodology,
-    queryOptions: { enabled: !!methodology },
+    queryOptions: { enabled: !!methodology, staleTime: 5000 },
   })
 
   return (

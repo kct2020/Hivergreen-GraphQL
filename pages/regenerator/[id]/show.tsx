@@ -52,7 +52,7 @@ const RegeneratorShowPage: NextPage = () => {
     resource: "regenerators",
     action: "edit",
     params: regenerator,
-    queryOptions: { enabled: !!regenerator },
+    queryOptions: { enabled: !!regenerator, staleTime: 5000 },
   })
 
   return (
