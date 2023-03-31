@@ -15,7 +15,7 @@ import type { RefinePage } from "pages/_app"
 import React from "react"
 import { accredit } from "src/mutations/attestations"
 
-export { getServerSideProps } from "@lib/i18nSSR"
+export { getStaticProps } from "@lib/i18nSSR"
 
 const CreditIndexPage: RefinePage = () => {
   const router = useRouter()

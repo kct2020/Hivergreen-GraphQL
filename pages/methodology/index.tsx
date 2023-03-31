@@ -13,6 +13,8 @@ import { useRouter } from "next/router"
 import React from "react"
 import { mintMethodology } from "src/mutations/group"
 
+export { getStaticProps } from "@lib/i18nSSR"
+
 const MethodologyIndexPage: NextPage = () => {
   const router = useRouter()
 

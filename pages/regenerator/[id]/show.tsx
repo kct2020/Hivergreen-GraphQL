@@ -9,6 +9,8 @@ import { HttpError, useShow } from "@refinedev/core"
 import { Button, Col, Row, Statistic, Typography } from "antd"
 import type { NextPage } from "next"
 
+export { getStaticProps } from "@lib/i18nSSR"
+
 const RegeneratorShowPage: NextPage = () => {
   const {
     queryResult: { data },

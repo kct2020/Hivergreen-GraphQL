@@ -10,6 +10,8 @@ import { Button, Col, Row, Statistic, Typography } from "antd"
 import dayjs from "dayjs"
 import type { NextPage } from "next"
 
+export { getStaticProps } from "@lib/i18nSSR"
+
 const ClaimShowPage: NextPage = () => {
   const {
     queryResult: { data },

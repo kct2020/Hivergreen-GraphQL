@@ -25,13 +25,11 @@ export const RouteTransitions: React.FC<React.PropsWithChildren> = ({
   useEffect(() => {
     const onStart = () => {
       setLoading(true)
-      console.log(true)
       NProgress.start()
     }
 
     const onSettled = () => {
       setLoading(false)
-      console.log(false)
       NProgress.done()
       window.scroll({ behavior: "smooth", top: 0, left: 0 })
     }
