@@ -87,7 +87,7 @@ const MethodologyShowPage: NextPage = () => {
             level={2}
             style={{ marginTop: 48, marginBottom: 32 }}
           >
-            Credits
+            Accreditations
           </Typography.Title>
           <CreditList tableProps={tableProps} sorters={sorters} />
         </>
