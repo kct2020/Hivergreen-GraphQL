@@ -1,9 +1,8 @@
-import * as actions from "@cap/sdk/actions"
 import { AuthBindings } from "@refinedev/core"
-import { fetchSigner } from "@wagmi/core"
 
 export { WagmiConfig } from "wagmi"
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const makeAuthProvider = (siwe: any): AuthBindings => ({
   register: async () => ({ success: true }),
   login: async () => {
@@ -15,7 +14,7 @@ export const makeAuthProvider = (siwe: any): AuthBindings => ({
     return { success }
   },
   check: async () => ({ authenticated: siwe.isSignedIn }),
-  getPermissions: async () => {},
+  getPermissions: async () => undefined,
   getIdentity: () => siwe.data ?? null,
   onError: async error => {
     console.error(error)

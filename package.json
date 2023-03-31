@@ -6,7 +6,7 @@
     "dev": "cross-env NODE_OPTIONS=--max_old_space_size=4096 refine dev",
     "build": "refine build",
     "start": "refine start",
-    "lint": "eslint '**/*.{js,jsx,ts,tsx}'",
+    "lint": "next lint",
     "refine": "refine"
   },
   "dependencies": {
@@ -54,9 +54,10 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.57.0",
-    "@typescript-eslint/parser": "5.48.0",
+    "@typescript-eslint/parser": "^5.57.0",
     "babel-plugin-import": "^1.13.6",
     "cross-env": "^7.0.3",
+    "eslint": "^8.37.0",
     "eslint-config-next": "^13.2.4",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",

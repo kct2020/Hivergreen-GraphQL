@@ -2,7 +2,6 @@ import * as actions from "@cap/sdk/actions"
 import * as ipfs from "@lib/ipfs"
 import dayjs from "dayjs"
 import { BigNumber, Signer } from "ethers"
-import _ from "lodash"
 import { Address } from "wagmi"
 
 export interface ClaimVariables {
@@ -24,6 +23,7 @@ export const claim = async (
   ])
 
   const contract = actions.getCap({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     chainId: chainId as any,
     signerOrProvider: signer,
   })
@@ -73,6 +73,7 @@ export const accredit = async (
   ])
 
   const contract = actions.getCap({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     chainId: chainId as any,
     signerOrProvider: signer,
   })

@@ -1,7 +1,7 @@
 "use client"
 
 import { FileSearchOutlined } from "@ant-design/icons"
-import type { Claim, Credit, Regenerator } from "@cap/sdk/graph"
+import type { Claim, Regenerator } from "@cap/sdk/graph"
 import { ClaimList } from "@components/claims/list"
 import * as ipfs from "@lib/ipfs"
 import { Show, useTable } from "@refinedev/antd"

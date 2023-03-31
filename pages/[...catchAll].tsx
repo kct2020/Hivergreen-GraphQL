@@ -6,7 +6,7 @@ import { makeAuthProvider } from "src/authProvider"
 
 export default ErrorComponent
 
-export const getServerSideProps: GetServerSideProps<{}> = async context => {
+export const getServerSideProps: GetServerSideProps = async context => {
   const session = await getSession(context.req, context.res)
 
   const { authenticated, redirectTo } = await makeAuthProvider({

@@ -19,7 +19,7 @@ import { Title } from "src/layout/title"
 const Web3App = dynamic(() => import("@contexts/web3"), { ssr: false })
 const RefineApp = dynamic(() => import("@contexts/refine"), { ssr: false })
 
-export type RefinePage<P = {}, IP = P> = NextPage<P, IP> & {
+export type RefinePage<P = object, IP = P> = NextPage<P, IP> & {
   noLayout?: boolean
 }
 
@@ -27,11 +27,7 @@ interface AppPropsWithLayout extends AppProps {
   Component: RefinePage
 }
 
-const App: RefinePage<AppPropsWithLayout> = ({
-  Component,
-  pageProps,
-  router,
-}) => {
+const App: RefinePage<AppPropsWithLayout> = ({ Component, pageProps }) => {
   const render = Component.noLayout
     ? () => <Component {...pageProps} />
     : () => (

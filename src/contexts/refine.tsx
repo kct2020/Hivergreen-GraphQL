@@ -16,7 +16,6 @@ import NProgress from "nprogress"
 import React, { useEffect, useMemo, useState } from "react"
 import { makeAuthProvider } from "src/authProvider"
 import { dataProvider } from "src/dataProvider"
-import { useEffectOnce } from "usehooks-ts"
 
 export const RouteTransitions: React.FC<React.PropsWithChildren> = ({
   children,

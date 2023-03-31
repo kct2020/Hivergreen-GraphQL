@@ -1,7 +1,6 @@
 import * as actions from "@cap/sdk/actions"
 import * as ipfs from "@lib/ipfs"
-import { Signer, constants } from "ethers"
-import _ from "lodash"
+import { Signer } from "ethers"
 
 export interface MintGroupVariables {
   name: string
@@ -22,6 +21,7 @@ const minter =
     ])
 
     const contract = actions[`get${contractName}`]({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       chainId: (await getChainID) as any,
       signerOrProvider: signer,
     })

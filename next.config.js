@@ -1,8 +1,9 @@
-const { i18n } = require("./next-i18next.config.js")
+const { i18n, localePath } = require("./next-i18next.config.js")
 
 // @type {import('next/dist/next-server/server/config').NextConfig}
 module.exports = {
   i18n,
+  swcMinify: true,
   experimental: {
     newNextLinkBehavior: true,
   },

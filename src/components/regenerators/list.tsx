@@ -2,8 +2,8 @@ import type { Regenerator } from "@cap/sdk/graph"
 import {
   DateField,
   EditButton,
-  getDefaultSortOrder,
   ShowButton,
+  getDefaultSortOrder,
   useTable,
 } from "@refinedev/antd"
 import {
@@ -15,7 +15,7 @@ import { Space, Table } from "antd"
 import dayjs from "dayjs"
 
 export const RegeneratorList: React.FC<
-  IResourceComponentsProps<GetListResponse<{}>>
+  IResourceComponentsProps<GetListResponse>
 > = () => {
   const { tableProps, sorters } = useTable<Regenerator, HttpError>({
     resource: "regenerator",

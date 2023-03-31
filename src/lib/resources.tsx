@@ -2,9 +2,7 @@ import {
   CheckCircleOutlined,
   CompassOutlined,
   DeploymentUnitOutlined,
-  FileDoneOutlined,
   PlusCircleOutlined,
-  SafetyCertificateOutlined,
 } from "@ant-design/icons"
 import { ResourceProps } from "@refinedev/core"
 

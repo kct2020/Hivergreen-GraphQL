@@ -1,8 +1,11 @@
 import { CIDString, Filelike, PutOptions, Web3Storage } from "web3.storage"
 
-export const client = new Web3Storage({
-  token: process.env.NEXT_PUBLIC_WEB3_STORAGE_TOKEN!,
-})
+const token = process.env.NEXT_PUBLIC_WEB3_STORAGE_TOKEN
+if (!token) {
+  throw new Error("NEXT_PUBLIC_WEB3_STORAGE_TOKEN is unset")
+}
+
+export const client = new Web3Storage({ token })
 
 export const upload = (files: Iterable<Filelike>, options: PutOptions = {}) => {
   let resolveCID

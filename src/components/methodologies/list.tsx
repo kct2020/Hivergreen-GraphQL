@@ -15,7 +15,7 @@ import { Space, Table } from "antd"
 import dayjs from "dayjs"
 
 export const MethodologyList: React.FC<
-  IResourceComponentsProps<GetListResponse<{}>>
+  IResourceComponentsProps<GetListResponse>
 > = () => {
   const { tableProps, sorters } = useTable<Methodology, HttpError>({
     resource: "methodology",

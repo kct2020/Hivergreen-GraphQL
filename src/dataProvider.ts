@@ -28,7 +28,7 @@ export const generateSort = (sorters: CrudSorting = []) => {
 }
 
 export const generateFilter = (filters: CrudFilters = []) => {
-  const queryFilters: { [key: string]: any } = {}
+  const queryFilters: { [key: string]: unknown } = {}
 
   for (const filter of filters) {
     if (filter.operator === "or" || filter.operator === "and") {
@@ -64,9 +64,8 @@ export const dataProvider: Required<DataProvider> = {
       throw new Error("Please connect your wallet first.")
     }
 
-    const data = {
-      id: await meta.action(signer, variables as any),
-    } as any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data = { id: await meta.action(signer, variables as any) } as any
 
     return { data }
   },
@@ -192,9 +191,14 @@ export const dataProvider: Required<DataProvider> = {
     }
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   createMany: async ({ resource, variables, meta }) => ({ data: [] }),
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
   update: async ({ resource, id, variables, meta }) => ({ data: null as any }),
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   updateMany: async ({ resource, ids, variables, meta }) => ({ data: [] }),
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
   deleteOne: async ({ resource, id, meta }) => ({ data: null as any }),
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   deleteMany: async ({ resource, ids, meta }) => ({ data: [] }),
 }
