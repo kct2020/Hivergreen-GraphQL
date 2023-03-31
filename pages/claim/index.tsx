@@ -4,7 +4,12 @@ import { InboxOutlined, PlusCircleOutlined } from "@ant-design/icons"
 import type { Claim, Regenerator } from "@cap/sdk/graph"
 import { ClaimList } from "@components/claims/list"
 import { queryClient } from "@contexts/web3"
-import { useModalForm, useSelect, useTable } from "@refinedev/antd"
+import {
+  getValueFromEvent,
+  useModalForm,
+  useSelect,
+  useTable,
+} from "@refinedev/antd"
 import { List } from "@refinedev/antd"
 import { HttpError, useCan } from "@refinedev/core"
 import { DatePicker, Form, InputNumber, Select, Upload } from "antd"
@@ -108,11 +113,7 @@ const ClaimIndexPage: RefinePage = () => {
             name="fileList"
             rules={[{ required: true }]}
             valuePropName="fileList"
-            getValueFromEvent={event =>
-              event.fileList.map(
-                (f: { originFileObj: File }) => f.originFileObj,
-              )
-            }
+            getValueFromEvent={getValueFromEvent}
           >
             <Upload.Dragger listType="picture" multiple>
               <p className="ant-upload-drag-icon">

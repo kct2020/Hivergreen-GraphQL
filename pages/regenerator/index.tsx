@@ -4,7 +4,7 @@ import { CompassOutlined, InboxOutlined } from "@ant-design/icons"
 import type { Regenerator } from "@cap/sdk/graph"
 import { RegeneratorList } from "@components/regenerators/list"
 import { queryClient } from "@contexts/web3"
-import { useModalForm } from "@refinedev/antd"
+import { getValueFromEvent, useModalForm } from "@refinedev/antd"
 import { List } from "@refinedev/antd"
 import { Form, Input, Upload } from "antd"
 import { Modal } from "antd"
@@ -59,11 +59,7 @@ const RegeneratorIndexPage: RefinePage = () => {
             name="fileList"
             rules={[{ required: true }]}
             valuePropName="fileList"
-            getValueFromEvent={event =>
-              event.fileList.map(
-                (f: { originFileObj: File }) => f.originFileObj,
-              )
-            }
+            getValueFromEvent={getValueFromEvent}
           >
             <Upload.Dragger listType="picture" multiple>
               <p className="ant-upload-drag-icon">

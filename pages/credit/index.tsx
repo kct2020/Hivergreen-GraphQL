@@ -4,7 +4,12 @@ import { CheckCircleOutlined, InboxOutlined } from "@ant-design/icons"
 import { Claim, Credit, Methodology } from "@cap/sdk/graph"
 import { CreditList } from "@components/credits/list"
 import { queryClient } from "@contexts/web3"
-import { useModalForm, useSelect, useTable } from "@refinedev/antd"
+import {
+  getValueFromEvent,
+  useModalForm,
+  useSelect,
+  useTable,
+} from "@refinedev/antd"
 import { List } from "@refinedev/antd"
 import { HttpError } from "@refinedev/core"
 import { DatePicker, Form, InputNumber, Select, Upload } from "antd"
@@ -126,11 +131,7 @@ const CreditIndexPage: RefinePage = () => {
             name="fileList"
             rules={[{ required: true }]}
             valuePropName="fileList"
-            getValueFromEvent={event =>
-              event.fileList.map(
-                (f: { originFileObj: File }) => f.originFileObj,
-              )
-            }
+            getValueFromEvent={getValueFromEvent}
           >
             <Upload.Dragger listType="picture" multiple>
               <p className="ant-upload-drag-icon">
