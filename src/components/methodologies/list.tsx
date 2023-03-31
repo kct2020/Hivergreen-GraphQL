@@ -59,7 +59,7 @@ export const MethodologyList: React.FC<
         render={(id, record) => (
           <Space>
             <ShowButton recordItemId={id} resource="methodology" size="small">
-              View {id}
+              {id}
             </ShowButton>
             {isOwner(record) && (
               <EditButton

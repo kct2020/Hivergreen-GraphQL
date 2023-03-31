@@ -58,7 +58,7 @@ export const RegeneratorList: React.FC<
         render={(id, record) => (
           <Space>
             <ShowButton resource="regenerator" recordItemId={id} size="small">
-              View {id}
+              {id}
             </ShowButton>
             {isOwner(record) && (
               <EditButton
