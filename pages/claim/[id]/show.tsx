@@ -10,7 +10,7 @@ import { Button, Col, Row, Statistic, Typography } from "antd"
 import dayjs from "dayjs"
 import type { NextPage } from "next"
 
-export { getStaticProps } from "@lib/i18nSSR"
+export { getStaticProps, getStaticPaths } from "@lib/i18nSSG"
 
 const ClaimShowPage: NextPage = () => {
   const {

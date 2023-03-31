@@ -13,7 +13,7 @@ import type { RefinePage } from "pages/_app"
 import React from "react"
 import { mintRegenerator } from "src/mutations/group"
 
-export { getStaticProps } from "@lib/i18nSSR"
+export { getStaticProps } from "@lib/i18nSSG"
 
 const RegeneratorIndexPage: RefinePage = () => {
   const router = useRouter()

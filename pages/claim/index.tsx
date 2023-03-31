@@ -14,7 +14,7 @@ import { useRouter } from "next/router"
 import type { RefinePage } from "pages/_app"
 import React from "react"
 import { claim } from "src/mutations/attestations"
-export { getStaticProps } from "@lib/i18nSSR"
+export { getStaticProps } from "@lib/i18nSSG"
 
 const ClaimIndexPage: RefinePage = () => {
   const router = useRouter()
