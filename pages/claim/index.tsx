@@ -4,6 +4,7 @@ import { InboxOutlined, PlusCircleOutlined } from "@ant-design/icons"
 import type { Claim, Regenerator } from "@cap/sdk/graph"
 import { ClaimList } from "@components/claims/list"
 import { queryClient } from "@contexts/web3"
+import { getFileListFromEvent } from "@lib/antd"
 import {
   getValueFromEvent,
   useModalForm,
@@ -113,7 +114,7 @@ const ClaimIndexPage: RefinePage = () => {
             name="fileList"
             rules={[{ required: true }]}
             valuePropName="fileList"
-            getValueFromEvent={getValueFromEvent}
+            getValueFromEvent={getFileListFromEvent}
           >
             <Upload.Dragger listType="picture" multiple>
               <p className="ant-upload-drag-icon">

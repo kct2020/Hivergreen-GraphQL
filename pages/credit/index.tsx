@@ -4,6 +4,7 @@ import { CheckCircleOutlined, InboxOutlined } from "@ant-design/icons"
 import { Claim, Credit, Methodology } from "@cap/sdk/graph"
 import { CreditList } from "@components/credits/list"
 import { queryClient } from "@contexts/web3"
+import { getFileListFromEvent } from "@lib/antd"
 import {
   getValueFromEvent,
   useModalForm,
@@ -132,7 +133,7 @@ const CreditIndexPage: RefinePage = () => {
             name="fileList"
             rules={[{ required: true }]}
             valuePropName="fileList"
-            getValueFromEvent={getValueFromEvent}
+            getValueFromEvent={getFileListFromEvent}
           >
             <Upload.Dragger listType="picture" multiple>
               <p className="ant-upload-drag-icon">

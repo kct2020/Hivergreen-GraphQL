@@ -4,6 +4,7 @@ import { DeploymentUnitOutlined, InboxOutlined } from "@ant-design/icons"
 import type { Methodology } from "@cap/sdk/graph"
 import { MethodologyList } from "@components/methodologies/list"
 import { queryClient } from "@contexts/web3"
+import { getFileListFromEvent } from "@lib/antd"
 import { getValueFromEvent, useModalForm } from "@refinedev/antd"
 import { List } from "@refinedev/antd"
 import { Form, Input, Upload } from "antd"
@@ -61,7 +62,7 @@ const MethodologyIndexPage: NextPage = () => {
             label="Documentation"
             rules={[{ required: true }]}
             valuePropName="fileList"
-            getValueFromEvent={getValueFromEvent}
+            getValueFromEvent={getFileListFromEvent}
           >
             <Upload.Dragger listType="picture" multiple>
               <p className="ant-upload-drag-icon">
