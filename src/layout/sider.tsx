@@ -122,6 +122,7 @@ export const Sider: React.FC<RefineLayoutSiderProps> = ({
         selectedKeys={selectedKey ? [selectedKey] : []}
         defaultOpenKeys={defaultOpenKeys}
         mode="inline"
+        style={{ borderInlineEnd: 0 }}
         onClick={() => {
           setDrawerOpen(false)
           if (!breakpoint.lg) {
